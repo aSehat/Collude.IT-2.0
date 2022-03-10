@@ -23,5 +23,9 @@ body {
   font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  background-color: #f6f8fa;
+  background-color: #F2F2F2;
+}
+
+ul {
+  list-style: none;
 }
