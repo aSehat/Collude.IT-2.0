@@ -9,7 +9,12 @@ import LandingPage from './components/landing/LandingPage';
 import { Provider } from 'react-redux';
 import store from './store';
 import './App.css';
+import setAuthToken from './utils/setAuthToken';
 
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
 
