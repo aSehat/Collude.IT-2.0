@@ -1,114 +1,128 @@
 import * as React from 'react';
-import isWeekend from 'date-fns/isWeekend';
+import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticDatePicker from '@mui/lab/StaticDatePicker';
+import PickersDay from '@mui/lab/PickersDay';
 
-import {Paper, Grid} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
-
-
-export const styles = makeStyles(() => ({ //define CSS for different date types
-    notInThisMonthDayPaper: {
-        width: "35px",
-        height: "35px",
-        backgroundColor: "#eeeeee",
-        margin: "3px",
-        boxShadow: "none",
-        borderRadius: 0,
-        padding: "1px",
+const CustomPickersDay = styled(PickersDay, {
+  shouldForwardProp: (prop) =>
+    prop !== 'dayIsBetween',
+})(({ theme, dayIsBetween, isFirstDay}) => ({
+  ...(dayIsBetween && {
+    borderRadius: 0,
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.primary.dark,
     },
-    normalDayPaper: {
-        width: "35px",
-        height: "35px",
-        backgroundColor: "#e8f5e9",
-        margin: "3px",
-        boxShadow: "none",
-        borderRadius: 0,
-        padding: "1px",
-        cursor: "pointer",
-    },
-    selectedDayPaper: {
-        width: "31px",
-        height: "31px",
-        backgroundColor: "#f9fbe7",
-        margin: "3px",
-        boxShadow: "none",
-        borderRadius: 0,
-        borderStyle: "solid",
-        borderWidth: "2px",
-        borderColor: "lime",
-        padding: "1px",
-        cursor: "pointer",
-    },
-    todayPaper: {
-        width: "35px",
-        height: "35px",
-        backgroundColor: "lightGreen",
-        margin: "3px",
-        boxShadow: "none",
-        borderRadius: 0,
-        padding: "1px",
-        cursor: "pointer",
-        color: " white",
-    },}));
+  })
+  // ...(isFirstDay && {
+  //   borderTopLeftRadius: '50%',
+  //   borderBottomLeftRadius: '50%',
+  //   borderTopRightRadius: '50%',
+  //   borderBottomRightRadius: '50%'
+  // }),
+}));
 
-export default function DateSelector() {
+const dateList = {
+  'availabilities' : [
+    {
+      'date': '2022-03-24', 
+      'availability': {
+        '1': '12:00PM - 2:00PM'
+      },
+    },
+    {
+      'date': '2022-03-25', 
+      'availability': {
+        '1': '12:00PM - 2:00PM'
+      },
+    },
+    {
+      'date': '2022-03-26', 
+      'availability': {
+        '1': '12:00PM - 2:00PM'
+      }
+    }
+  ]
+};
+
+function parseJSON() {
+  // Loop through dateList and return all dates
+  let dates = [];
+  for (let i = 0; i < dateList.availabilities.length; i++) {
+    dates.push(dateList.availabilities[i].date);
+  }
+  return dates;
+}
+
+export default function DateSelector(selectionType) {
   const [value, setValue] = React.useState(new Date());
 
-  const today = new Date()
-  const sunnyDays = [1, 6, 10, 24, 15]
-  const classes = styles();
+  const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
 
-  function getDayElement(day, selectedDate, isInCurrentMonth, dayComponent) {
+    const date1 = new Date("Thu Mar 24 2022 21:28:21 GMT-0400 (Eastern Daylight Time)");
 
-    const isSunny = sunnyDays.includes(day.getDate()); 
-    const isSelected = day.getDate() === selectedDate;
-    const isToday = day.getDate() === today.getDate() && day.getMonth() === today.getMonth();
+    // console.log("getdate", date1,);
 
-    let dateTile
-    if (isInCurrentMonth) {
-        if (isSunny) {
-            dateTile = (<Paper className={classes.todayPaper}>   
-                {/* <Grid item>😊</Grid> */}
-                {/* <Grid item><br/></Grid> */}
-                  <Grid item>{day.getDate()}</Grid>
-              </Paper>
-            )
-            
-        } else {
-            console.log("not sunny");
-            dateTile = (
-                <Paper className={isSelected ? classes.selectedDayPaper : isToday ? classes.todayPaper : classes.normalDayPaper}>   
-                    <Grid item>{day.getDate()}</Grid>
-                </Paper>)
-        }
-    } else {
-        dateTile = (<Paper className={classes.notInThisMonthDayPaper}>
-            <Grid item><br/></Grid>
-            <Grid item style={{color: "lightGrey"}}>
-                {day.getDate()}
-            </Grid>
-        </Paper>)
+    // if (date1.getDate() === value.getDate()) {
+    //   console.log("date1", date1);
+    // }
+
+    // Check if the date is in the list of dates
+    const isDateInList = parseJSON().includes(date.toISOString().split('T')[0]);
+
+    console.log(isDateInList);
+
+    // const start = startOfWeek(value);
+    // const end = endOfWeek(value);
+
+    // const dayIsBetween = isWithinInterval(date, { start, end });
+    let isFirstDay = false;
+    // const isLastDay = isSameDay(date, end);
+
+    if (isDateInList) {
+      isFirstDay = true;
     }
 
-    return dateTile
-  }
-    
+    // // console.log("date: " + value);
+    // // console.log("pickersDayProps: " + pickersDayProps);
+    // // console.log("selectedDates: " + selectedDates);
+
+    // if (!value) {
+    //   return <PickersDay {...pickersDayProps} />;
+    // }
+
+    // const start = startOfWeek(value);
+    // const end = endOfWeek(value);
+
+    // const dayIsBetween = isWithinInterval(date, { start, end });
+    // const isFirstDay = isSameDay(date, start);
+    // const isLastDay = isSameDay(date, end);
+
+    return (
+      <CustomPickersDay
+        {...pickersDayProps}
+        disableMargin
+        dayIsBetween={isFirstDay}
+      />
+    );
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <StaticDatePicker
-        orientation="landscape"
-        openTo="day"
+        displayStaticWrapperAs="desktop"
+        label="Week picker"
         value={value}
-        showToolbar={false}
-        shouldDisableDate={isWeekend}
         onChange={(newValue) => {
           setValue(newValue);
         }}
-        renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => getDayElement(day, selectedDate, isInCurrentMonth, dayComponent)}
+        renderDay={renderWeekPickerDay}
         renderInput={(params) => <TextField {...params} />}
+        inputFormat="'Week of' MMM d"
       />
     </LocalizationProvider>
   );
