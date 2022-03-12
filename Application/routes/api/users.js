@@ -89,8 +89,7 @@ router.get('/', auth, async (req, res) => {
             { email: { $regex: req.query.search, $options: 'i'} }
         ],
     } : {};
-
-    console.log(req.user);
+    
     const users = await User.find(searchKeyword).find({_id: { $ne: req.user.id }});
     res.send(users);
 });
