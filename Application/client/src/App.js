@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // Components
 import Navbar from './components/layout/Navbar';
 import LandingPage from './components/landing/LandingPage';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
 
 //Redux
 import { Provider } from 'react-redux';
@@ -25,7 +27,8 @@ const App = () => {
           <Navbar/>
           <Routes>
             <Route path="/" element={<LandingPage/>} />
-            <Route path="/login" element={<div>LoginPage</div>} />
+            <Route path="/register" element={<Register/>} />
+            <Route path="/login" element={<Login/>} />
           </Routes>
         </Fragment>
       </Router>
