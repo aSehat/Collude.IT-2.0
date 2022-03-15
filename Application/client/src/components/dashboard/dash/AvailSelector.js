@@ -18,11 +18,43 @@ const style = {
     p: 4,
   };
 
+
+
 export default function AvailSelector({selectedDate}) {
 
     const [open, setOpen] = React.useState(false);
+    const [timeList, setTimeList] = React.useState([]);
+
+    const [startTime, setStartTime] = React.useState("07:30");
+    const [endTime, setEndTime] = React.useState("09:30");
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const updateStartTime = ({target}) => {
+        setStartTime(target.value);
+    }
+
+    const updateEndTime = ({target}) => {
+        setEndTime(target.value);
+    }
+
+    const handleClick = () => {
+        console.log("val", startTime.value);
+        setTimeList(timeList => timeList.concat(startTime + ' - ' + endTime));
+        handleClose()
+    }
+
+    const submitHandler = e =>{
+        e.preventDefault()
+    }
+
+    // setTimes(arr => [...arr, "test"]);
+
+    // setTimes(() => {
+    //     // times.push("test");
+    //     console.log(times);
+    // });
   
     return (
         <div>
@@ -36,18 +68,19 @@ export default function AvailSelector({selectedDate}) {
             <Box sx={style}>
                 {/* <TimeSelector label="Start Time"/>
                 <TimeSelector label="End Time"/> */}
-                <form className={styles.timeContainer} noValidate>
+                <form onSubmit={submitHandler} className={styles.timeContainer} noValidate>
                     <TextField
                         id="time"
                         label="Start Time"
                         type="time"
-                        defaultValue="07:30"
+                        defaultValue={startTime}
+                        onChange={updateStartTime}
                         className={styles.timeField}
                         InputLabelProps={{
-                        shrink: true,
+                            shrink: true,
                         }}
                         inputProps={{
-                        step: 300, // 5 min
+                            step: 300, // 5 min
                         }}
                     />
 
@@ -55,23 +88,41 @@ export default function AvailSelector({selectedDate}) {
                         id="time"
                         label="End Time"
                         type="time"
-                        defaultValue="07:30"
+                        defaultValue={endTime}
+                        onChange={updateEndTime}
                         className={styles.timeField}
                         InputLabelProps={{
-                        shrink: true,
+                            shrink: true,
                         }}
                         inputProps={{
-                        step: 300, // 5 min
+                            step: 300, // 5 min
                         }}
                     />
+                    <Button onClick={handleClick} variant="contained" color="primary">SUBMIT</Button>
+
                 </form>
                 <h1>
                     date: {selectedDate.getDate()}
                 </h1>
             </Box>
-
-            
         </Modal>
+
+        <div>
+            {timeList.map((time) => {
+            return <div key={time}>{time}</div>;
+            })}
+        </div>
+
+        {/* <ul>
+            {
+                times.map((item, i) => (
+                    <li key={i}>
+                        {item}
+                        {' '}
+                    </li>
+                ))
+            }
+        </ul> */}
 
         {
             selectedDate.getDate() > 0 &&
