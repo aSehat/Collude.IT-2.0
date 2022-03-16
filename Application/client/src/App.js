@@ -35,7 +35,8 @@ const App = () => {
 				<Fragment>
 					<Navbar />
 					<Routes>
-						<Route path='/' element={<LandingPage />} />
+						{/* <Route path='/' element={<LandingPage />} /> */}
+						<Route path='/' element={<Login />} />
 						<Route path='/register' element={<Register />} />
 						<Route path='/login' element={<Login />} />
 						<Route path='/dashboard' element={<Dashboard />} />
@@ -45,4 +46,5 @@ const App = () => {
 		</Provider>
 	);
 };
+
 export default App;

@@ -8,126 +8,158 @@ import PickersDay from '@mui/lab/PickersDay';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 
 const CustomPickersDay = styled(PickersDay, {
-  shouldForwardProp: (prop) =>
-    prop !== 'isDateInList',
-})(({ theme, isDateInList}) => ({
-  ...(isDateInList && {
-    borderRadius: '25%',
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.common.white,
-    '&:hover, &:focus': {
-      backgroundColor: theme.palette.primary.dark,
-    },
-  })
+	shouldForwardProp: (prop) => prop !== 'isDateInList',
+})(({ theme, isDateInList }) => ({
+	...(isDateInList && {
+		borderRadius: '25%',
+		backgroundColor: theme.palette.primary.light,
+		color: theme.palette.common.white,
+		'&:hover, &:focus': {
+			backgroundColor: theme.palette.primary.dark,
+		},
+	}),
 }));
 
 const dateList = {
-  'availabilities' : [
-    {
-      'date': '2022-03-23', 
-      'repeat': true,
-      'availability': {
-        '1': '12:00PM - 2:00PM'
-      },
-    },
-    {
-      'date': '2022-03-20', 
-      'repeat': true,
-      'availability': {
-        '1': '12:00PM - 2:00PM'
-      },
-    },
-    {
-      'date': '2022-03-25', 
-      'repeat': true,
-      'availability': {
-        '1': '12:00PM - 2:00PM'
-      }
-    },
-    {
-        'date': '2022-03-27', 
-        'repeat': true,
-        'availability': {
-          '1': '12:00PM - 2:00PM'
-        }
-    }
-  ]
+	availabilities: [
+		{
+			date: '2022-03-23',
+			repeat: true,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+		{
+			date: '2022-03-14',
+			repeat: false,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+		{
+			date: '2022-03-19',
+			repeat: false,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+		{
+			date: '2022-03-01',
+			repeat: false,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+		{
+			date: '2022-04-12',
+			repeat: false,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+		{
+			date: '2022-04-14',
+			repeat: false,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+		{
+			date: '2022-04-25',
+			repeat: false,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+		{
+			date: '2022-03-20',
+			repeat: true,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+		{
+			date: '2022-03-25',
+			repeat: true,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+		{
+			date: '2022-03-27',
+			repeat: true,
+			availability: {
+				1: '12:00PM - 2:00PM',
+			},
+		},
+	],
 };
 
 function parseJSONDates() {
-  // Loop through dateList and return all dates
-  let dates = [];
-  let repeats = [null, null, null, null, null, null, null];
+	// Loop through dateList and return all dates
+	let dates = [];
+	let repeats = [null, null, null, null, null, null, null];
 
-  for (let i = 0; i < dateList.availabilities.length; i++) {
+	for (let i = 0; i < dateList.availabilities.length; i++) {
+		const dateObj = new Date(dateList.availabilities[i].date);
+		dateObj.setTime(
+			dateObj.getTime() + dateObj.getTimezoneOffset() * 60 * 1000
+		);
+		dates.push(dateList.availabilities[i].date);
 
-    const dateObj = new Date(dateList.availabilities[i].date);
-    dateObj.setTime(dateObj.getTime()+dateObj.getTimezoneOffset()*60*1000);
-    dates.push(dateList.availabilities[i].date);
-
-    if (dateList.availabilities[i].repeat === true) {
-        repeats[dateObj.getDay()] = dateObj;
-    }
-  }
-  return [dates, repeats];
+		if (dateList.availabilities[i].repeat === true) {
+			repeats[dateObj.getDay()] = dateObj;
+		}
+	}
+	return [dates, repeats];
 }
 
-export default function DateSelector({selectionType, setDate, setValid}) {
+export default function DateSelector({ selectionType, setDate, setValid }) {
+	const [value, setValue] = React.useState(new Date());
+	const [dates, repeats] = parseJSONDates();
 
+	const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
+		let available = false;
+		let disabled = false;
 
-  const [value, setValue] = React.useState(new Date());
-  const [dates, repeats] = parseJSONDates();
+		// Check if the date is in the list of dates
+		const isDateInList = dates.includes(date.toISOString().split('T')[0]);
+		if (repeats[date.getDay()] !== null) {
+			if (date > repeats[date.getDay()]) {
+				available = true;
+			}
+		}
 
-  const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
+		if (selectionType === 'other' && !(isDateInList || available)) {
+			disabled = true;
+		}
 
-    let available = false;
-    let disabled = false;
+		return (
+			<CustomPickersDay
+				{...pickersDayProps}
+				disabled={disabled}
+				selected={false}
+				// disableMargin
+				isDateInList={isDateInList || available}
+			/>
+		);
+	};
 
-    // Check if the date is in the list of dates
-    const isDateInList = dates.includes(date.toISOString().split('T')[0]);
-    if (repeats[date.getDay()] !== null) {
-        if (date > repeats[date.getDay()] ) {
-            available = true;
-        }
-    }
-
-    if (selectionType === 'other' && !(isDateInList || available)) {
-        disabled = true
-    }
-    
-    return (
-      <CustomPickersDay
-        {...pickersDayProps}
-        disabled={disabled}
-        selected={false}
-        // disableMargin
-        isDateInList={isDateInList || available}
-      />
-    );
-  };
-
-  return (
-      <div>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <StaticDatePicker
-                displayStaticWrapperAs="desktop"
-                label="Week picker"
-                value={value}
-                onChange={(newValue) => {
-                    setValue(newValue);
-                    setDate(newValue);
-                    setValid(1); // TODO: make this equal to zero if you scroll to another page
-                }}
-                renderDay={renderWeekPickerDay}
-                renderInput={(params) => <TextField {...params} />}
-                inputFormat="'Week of' MMM d"
-            />
-        </LocalizationProvider>
-        
-        {/* <FormGroup>
-            <FormControlLabel control={<Checkbox/>} label="Unique?"/>
-        </FormGroup> */}
-      </div>
-    
-  );
+	return (
+		<LocalizationProvider dateAdapter={AdapterDateFns}>
+			<StaticDatePicker
+				displayStaticWrapperAs='desktop'
+				label='Week picker'
+				value={value}
+				onChange={(newValue) => {
+					setValue(newValue);
+					setDate(newValue);
+					setValid(1); // TODO: make this equal to zero if you scroll to another page
+				}}
+				renderDay={renderWeekPickerDay}
+				renderInput={(params) => <TextField {...params} />}
+				inputFormat="'Week of' MMM d"
+			/>
+		</LocalizationProvider>
+	);
 }
