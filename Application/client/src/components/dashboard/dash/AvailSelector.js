@@ -1,9 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Button, Modal, Box } from '@mui/material';
-import TimeSelector from './TimeSelector'
 import styles from '../styles/AvailSelector.module.css';
 
 const style = {
@@ -18,20 +15,38 @@ const style = {
     p: 4,
   };
 
+function formatAMPM(time24) {
+    var tmpArr = time24.split(':'), time12;
+    if(+tmpArr[0] === 12) {
+        time12 = tmpArr[0] + ':' + tmpArr[1] + ' PM';
+    } else {
+        if(+tmpArr[0][0] === 0 && +tmpArr[0][1] === 0) {
+            time12 = '12:' + tmpArr[1] + ' AM';
+        } else {
+            if(+tmpArr[0] > 12) {
+                time12 = (+tmpArr[0]-12) + ':' + tmpArr[1] + ' PM';
+            } else {
+                time12 = (+tmpArr[0]) + ':' + tmpArr[1] + ' AM';
+            }
+        }
+    }
+    return time12;
+}
 
 
-export default function AvailSelector({selectedDate}) {
+const AvailSelector = ({selectedDate}) => {
 
     const [open, setOpen] = React.useState(false);
     const [timeList, setTimeList] = React.useState([]);
 
-    const [startTime, setStartTime] = React.useState("07:30");
-    const [endTime, setEndTime] = React.useState("09:30");
+    const [startTime, setStartTime] = React.useState("00:00");
+    const [endTime, setEndTime] = React.useState("23:59");
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const updateStartTime = ({target}) => {
+        console.log(startTime);
         setStartTime(target.value);
     }
 
@@ -40,8 +55,8 @@ export default function AvailSelector({selectedDate}) {
     }
 
     const handleClick = () => {
-        console.log("val", startTime.value);
-        setTimeList(timeList => timeList.concat(startTime + ' - ' + endTime));
+        console.log("val", startTime);
+        setTimeList(timeList => timeList.concat(formatAMPM(startTime) + ' - ' + formatAMPM(endTime)));
         handleClose()
     }
 
@@ -49,13 +64,6 @@ export default function AvailSelector({selectedDate}) {
         e.preventDefault()
     }
 
-    // setTimes(arr => [...arr, "test"]);
-
-    // setTimes(() => {
-    //     // times.push("test");
-    //     console.log(times);
-    // });
-  
     return (
         <div>
 
@@ -66,8 +74,6 @@ export default function AvailSelector({selectedDate}) {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                {/* <TimeSelector label="Start Time"/>
-                <TimeSelector label="End Time"/> */}
                 <form onSubmit={submitHandler} className={styles.timeContainer} noValidate>
                     <TextField
                         id="time"
@@ -109,20 +115,9 @@ export default function AvailSelector({selectedDate}) {
 
         <div>
             {timeList.map((time) => {
-            return <div key={time}>{time}</div>;
+                return <div key={time}>{time}</div>;
             })}
         </div>
-
-        {/* <ul>
-            {
-                times.map((item, i) => (
-                    <li key={i}>
-                        {item}
-                        {' '}
-                    </li>
-                ))
-            }
-        </ul> */}
 
         {
             selectedDate.getDate() > 0 &&
@@ -132,6 +127,4 @@ export default function AvailSelector({selectedDate}) {
     );
 }
 
-// TimeSelector.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
+export default AvailSelector;
