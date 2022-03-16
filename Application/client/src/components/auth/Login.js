@@ -16,7 +16,7 @@ import { login } from '../../actions/auth';
 import styles from './style/auth.module.css';
 
 // Parameters of function should contain all props used and be reflected by the prop types listed below
-const Login = ({ login }) => {
+const Login = ({ login, isAuthenticated }) => {
 	const [values, setValues] = useState({
 		email: '',
 		password: '',
@@ -47,9 +47,9 @@ const Login = ({ login }) => {
 	};
 
 	// If isAuthenticated is ever flagged True, redirect to the landing page
-	// if (isAuthenticated) {
-	// 	return <Navigate to='/dashboard' />;
-	// }
+	if (isAuthenticated) {
+		return <Navigate to='/dashboard' />;
+	}
 
 	return (
 		<Fragment>
@@ -134,7 +134,7 @@ Login.propTypes = {
 
 // use mapStateToProps when we want to pull a value from the state, in this case updating isAuthenticated
 const mapStateToProps = (state) => ({
-	// isAuthenticated: state.auth.isAuthenticated,
+	isAuthenticated: state.auth.isAuthenticated,
 });
 
 // First parameter is any state that you want to map, second is an object with any actions you want to use with this component

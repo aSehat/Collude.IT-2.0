@@ -1,9 +1,9 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import LoadingAnim from '../layout/LoadingAnim';
+import LoadingAnim from '../layout/loadingAnim.svg';
 
 // Private route that takes in route information and only gives access if user is authenticated
 // Will load and go to the passed in component *'{...props}'* if authenticated, otherwise will be
@@ -21,7 +21,7 @@ const PrivateRoute = ({
 			) : isAuthenticated ? (
 				<Component {...props} />
 			) : (
-				<Redirect to='/login' />
+				<Navigate to='/login' />
 			)
 		}
 	/>
