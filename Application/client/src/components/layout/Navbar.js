@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { logout } from '../../actions/auth';
+
 import styles from './style/Navbar.module.css';
 // import logo from '../../img/logoHERE.png';
 
-const Navbar = () => {
+const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
 	const authLinks = (
 		<ul>
 			<li>
@@ -17,7 +19,7 @@ const Navbar = () => {
 				</Link>
 			</li>
 			<li>
-				<a href='/'>
+				<a href='/' onClick={logout}>
 					<i></i>{' '}
 					{/* TODO: Add css class that hides the text when on a small screen */}
 					<span className={styles.alt}>Sign Out</span>
@@ -37,7 +39,6 @@ const Navbar = () => {
 		</ul>
 	);
 
-	var isAuthenticated = false;
 	return (
 		<nav className={styles.navbar}>
 			{/* <img src={logo} alt="Logo" className={styles.logo} /> */}
@@ -49,4 +50,17 @@ const Navbar = () => {
 	);
 };
 
-export default Navbar;
+Navbar.propType = {
+	auth: PropTypes.object.isRequired,
+};
+
+// Need to export connect with the component itself
+// export default connect()(Navbar);
+
+// Use mapStateToProps when we want to pull a value from the state, in this case updating auth
+const mapStateToProps = (state) => ({
+	auth: state.auth,
+});
+
+// First parameter is any state that you want to map, second is an object with any actions you want to use with this component
+export default connect(mapStateToProps, { logout })(Navbar);
