@@ -8,6 +8,9 @@ const config = require('config');
 // Used down below - 'check'
 const {check, validationResult} = require('express-validator');
 
+// Want to use middleware
+const auth = require('../../middleware/auth');
+
 // Bringing in the user model
 const User = require('../../models/User');
 
@@ -71,6 +74,24 @@ router.post('/', [
         console.error(err.message);
         res.status(500).send('Server error');
     }
+});
+
+
+// @route       Get api/users
+// @desc        Get All Users
+// @access      Public
+// /api/user?search=username
+//TODO: Add auth middleware here to ensure that same user is not returned when searching
+router.get('/', auth, async (req, res) => {
+    const searchKeyword = req.query.search ? {
+        $or : [
+            { name: { $regex: req.query.search, $options: 'i'} },
+            { email: { $regex: req.query.search, $options: 'i'} }
+        ],
+    } : {};
+    
+    const users = await User.find(searchKeyword).find({_id: { $ne: req.user.id }});
+    res.send(users);
 });
 
 module.exports = router;
