@@ -43,7 +43,6 @@ const Login = ({ login, isAuthenticated }) => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		login(email, password);
-		console.log(password);
 	};
 
 	// If isAuthenticated is ever flagged True, redirect to the landing page

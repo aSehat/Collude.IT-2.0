@@ -11,7 +11,6 @@ import Login from './components/auth/Login';
 // import DateSelector from './components/dashboard/dash/Availability';
 import Dashboard from './components/dashboard/dash/Dashboard';
 
-
 //Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -30,21 +29,22 @@ const App = () => {
 		store.dispatch(loadUser());
 	}, []);
 
-
 	return (
 		<Provider store={store}>
 			<Router>
 				<Fragment>
 					<Navbar />
 					<Routes>
-						<Route path='/' element={<LandingPage />} />
+						{/* <Route path='/' element={<LandingPage />} /> */}
+						<Route path='/' element={<Login />} />
 						<Route path='/register' element={<Register />} />
 						<Route path='/login' element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard/>} />
+						<Route path='/dashboard' element={<Dashboard />} />
 					</Routes>
 				</Fragment>
 			</Router>
 		</Provider>
 	);
+};
 
 export default App;

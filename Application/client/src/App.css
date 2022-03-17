@@ -1,31 +1,258 @@
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 html {
-  height: 100%;
+	height: 100%;
 }
 
 #root {
-  height: 100%;
+	height: 100%;
 }
 
 .container {
-  height: 100%;
+	height: 100%;
 }
 
 body {
-  width: 100%;
-  height: 100%;
-  padding-top: 55px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  background-color: #F2F2F2;
+	width: 100%;
+	height: 100%;
+	padding-top: 55px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 1rem;
+	line-height: 1.6;
+	background-color: #f2f2f2;
 }
 
 ul {
-  list-style: none;
+	list-style: none;
+}
+
+.containerBox {
+	/* box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1); */
+	box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.3);
+
+	/* padding-bottom: 0 !important; */
+	/* margin-bottom: 0 !important; */
+	/* display: inline-flex; */
+	margin: 20px;
+	padding: 5px;
+	padding-bottom: 0;
+	/* width: 50vw; */
+	background-color: white;
+	border-radius: 7%;
+	max-width: 340px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.addAvailBox {
+	box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.3);
+	margin: 20px;
+	padding: 20px;
+	background-color: white;
+	border-radius: 25px;
+	text-align: center;
+	max-width: 340px;
+	height: 350px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.addAvail {
+	/* display: inline-flex; */
+	margin-top: 20px;
+	float: bottom;
+}
+
+.MuiPickerStaticWrapper-root {
+	background-color: white !important;
+	/* margin: 10px; */
+	display: inline-block !important;
+	border-radius: 7%;
+}
+
+.MuiCalendarPicker-root {
+	background-color: white !important;
+	padding: 10px !important;
+	max-height: auto;
+}
+
+.PrivatePickersSlideTransition-root {
+	min-height: 230px !important;
+}
+
+.page {
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template:
+		'sidebar header header header header user'
+		'sidebar meetings meetings meetings meetings availability' / 1.3fr 1fr 1fr 1fr 1fr 1.5fr;
+	grid-gap: 10px;
+	grid-template-rows: 1fr 4fr;
+}
+
+.sidebar {
+	grid-area: sidebar;
+	background-color: white;
+}
+
+.meetings {
+	grid-area: meetings;
+}
+
+.availability {
+	grid-area: availability;
+	display: block;
+	/* padding: auto; */
+}
+
+.header {
+	grid-area: header;
+	padding: 40px;
+	padding-left: 120px;
+}
+
+.user {
+	grid-area: user;
+}
+
+h1 {
+	/* color: #01303f; */
+	color: #6a6a6a;
+	font-size: 65px;
+}
+
+h2 {
+	/* color: #01303f; */
+	color: #6a6a6a;
+	font-size: 35px;
+}
+
+h3 {
+	color: #01303f;
+	font-size: 20px;
+}
+
+p {
+	color: #6a6a6a;
+	font-size: 18px;
+}
+
+.titleAvailability {
+	width: 340px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.titleMeetings {
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.singleMeeting {
+	box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.3);
+	/* padding-bottom: 0 !important; */
+	/* margin-bottom: 0 !important; */
+	/* display: inline-flex; */
+	margin: 20px;
+	padding: 25px;
+	/* width: 50vw; */
+	background-color: white;
+	border-radius: 20px;
+	max-width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	letter-spacing: 2px;
+}
+
+.meetingFooter {
+	display: inline-flex;
+	padding: auto;
+	width: 100%;
+}
+
+.fa-cog {
+	color: #01303f;
+	font-size: 25px;
+	margin-right: 10px;
+}
+
+.startBttn {
+	background-color: #01303f;
+	color: white;
+	border-radius: 15px;
+	padding: 2px;
+	font-size: 18px;
+	float: right;
+	margin-left: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width: 100px;
+}
+
+.conversBar {
+	/* box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1); */
+	box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.2);
+
+	display: flex;
+	padding: 10px;
+	width: 90%;
+	border: solid 3px #01303f;
+	border-radius: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+}
+
+.contactName {
+	color: #01303f;
+	font-size: 22px;
+	font-weight: 700;
+	margin-right: 10px;
+}
+
+.lastOnline {
+	color: #6a6a6a;
+	font-size: 18px;
+	margin-left: auto;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.dot {
+	height: 20px;
+	width: 20px;
+	background-color: green;
+	border-radius: 50%;
+	margin-right: 15px;
+	margin-top: auto;
+	margin-bottom: auto;
+	display: inline-block;
+}
+
+.search {
+	/* box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.1); */
+	box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.2);
+
+	display: flex;
+	padding: 10px;
+	width: 90%;
+	border: solid 5px #47c2ff;
+	border-radius: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+	font-size: 20px;
+	margin-top: 100px;
+	margin-bottom: 65px;
+}
+
+.centeredHor {
+	margin-left: auto;
+	margin-right: auto;
 }

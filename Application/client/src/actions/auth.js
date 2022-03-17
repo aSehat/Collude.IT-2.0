@@ -85,7 +85,6 @@ export const login = (email, password) => async (dispatch) => {
 	try {
 		// Prepare response that will be returned when a request is made to api address with given body and config objects
 		const res = await axios.post('/api/auth', body, config);
-		console.log(res);
 		// If everything goes okay with the response, we want to dispatch register_success
 		dispatch({
 			type: LOGIN_SUCCESS,
