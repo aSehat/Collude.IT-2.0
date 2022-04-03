@@ -10,6 +10,7 @@ import Login from './components/auth/Login';
 
 // import DateSelector from './components/dashboard/dash/Availability';
 import Dashboard from './components/dashboard/dash/Dashboard';
+import Chat from './components/dashboard/chat/Chat';
 
 //Redux
 import { Provider } from 'react-redux';
@@ -40,6 +41,7 @@ const App = () => {
 						<Route path='/register' element={<Register />} />
 						<Route path='/login' element={<Login />} />
 						<Route path='/dashboard' element={<Dashboard />} />
+						<Route path="/chat" element={<Chat />} />
 					</Routes>
 				</Fragment>
 			</Router>
