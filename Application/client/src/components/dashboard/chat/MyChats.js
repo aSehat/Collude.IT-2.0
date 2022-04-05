@@ -4,10 +4,9 @@ import { Box, Stack } from '@mui/material';
 
 import ChatLoading from './ChatLoading';
 
-const MyChats = ({loggedUser}) => {
+const MyChats = ({selectedChat, setSelectedChat, fetchAgain, loggedUser}) => {
 
     const [chats, setChats] = useState([]);
-    const [selectedChat, setSelectedChat] = useState();
 
     const fetchChats = async () => {
         try {
@@ -24,10 +23,8 @@ const MyChats = ({loggedUser}) => {
     }
 
     useEffect(() => {
-        //setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
-        console.log(loggedUser);
         fetchChats();
-    }, []);
+    }, [fetchAgain]);
     
   return <>
   <Box>

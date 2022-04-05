@@ -1,8 +1,13 @@
+import { Box } from '@mui/material';
 import React from 'react'
 
-const ChatBox = () => {
+import SingleChat from './SingleChat';
+
+const ChatBox = ({selectedChat, setSelectedChat}) => {
   return (
-    <div>ChatBox</div>
+    <Box>
+      <SingleChat selectedChat={selectedChat} setSelectedChat={setSelectedChat} />
+    </Box>
   )
 }
 

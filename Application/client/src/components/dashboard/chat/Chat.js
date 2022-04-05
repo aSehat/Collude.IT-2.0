@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
@@ -10,6 +10,9 @@ import MyChats from './MyChats';
 import ChatBox from './ChatBox';
 
 const Chat = ({auth: {user} }) => {
+
+  const [selectedChat, setSelectedChat] = useState({});
+  const [fetchAgain, setFetchAgain] = useState(false);
   
   return (
     <div>
@@ -18,8 +21,8 @@ const Chat = ({auth: {user} }) => {
         display="flex"
         width="100%"
         >
-          {user && <MyChats loggedUser={user}/>}
-          {user && <ChatBox />}
+          {user && <MyChats selectedChat={selectedChat} setSelectedChat={setSelectedChat} fetchAgain={fetchAgain} loggedUser={user}/>}
+          {user && <ChatBox selectedChat={selectedChat} setSelectedChat={setSelectedChat} />}
         </Box>
     </div>
   )
@@ -31,7 +34,7 @@ Chat.prototype = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-})
+});
 
 
 export default connect(mapStateToProps)(Chat);
