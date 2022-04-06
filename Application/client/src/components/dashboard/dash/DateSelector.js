@@ -22,76 +22,17 @@ const CustomPickersDay = styled(PickersDay, {
 
 const dateList = {
 	availabilities: [
-		{
-			date: '2022-03-23',
-			repeat: true,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
-		{
-			date: '2022-03-14',
-			repeat: false,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
-		{
-			date: '2022-03-19',
-			repeat: false,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
-		{
-			date: '2022-03-01',
-			repeat: false,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
-		{
-			date: '2022-04-12',
-			repeat: false,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
-		{
-			date: '2022-04-14',
-			repeat: false,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
-		{
-			date: '2022-04-25',
-			repeat: false,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
-		{
-			date: '2022-03-20',
-			repeat: true,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
-		{
-			date: '2022-03-25',
-			repeat: true,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
-		{
-			date: '2022-03-27',
-			repeat: true,
-			availability: {
-				1: '12:00PM - 2:00PM',
-			},
-		},
+        {
+            startDate: new Date(2022, 3, 15),
+            endDate: new Date(2022, 3, 15),
+            repeat: true,
+        },
+        {
+            startDate: new Date(2022, 3, 16),
+            endDate: new Date(2022, 3, 16),
+            repeat: false,
+        }
+		
 	],
 };
 
@@ -101,16 +42,17 @@ function parseJSONDates() {
 	let repeats = [null, null, null, null, null, null, null];
 
 	for (let i = 0; i < dateList.availabilities.length; i++) {
-		const dateObj = new Date(dateList.availabilities[i].date);
+		const dateObj = dateList.availabilities[i].startDate;
 		dateObj.setTime(
 			dateObj.getTime() + dateObj.getTimezoneOffset() * 60 * 1000
 		);
-		dates.push(dateList.availabilities[i].date);
+		dates.push(dateList.availabilities[i].startDate.toDateString());
 
 		if (dateList.availabilities[i].repeat === true) {
 			repeats[dateObj.getDay()] = dateObj;
 		}
 	}
+    console.log(dates);
 	return [dates, repeats];
 }
 
@@ -123,8 +65,8 @@ export default function DateSelector({ selectionType, setDate, setValid }) {
 		let disabled = false;
 
 		// Check if the date is in the list of dates
-		const isDateInList = dates.includes(date.toISOString().split('T')[0]);
-		if (repeats[date.getDay()] !== null) {
+		const isDateInList = dates.includes(date.toDateString());
+        if (repeats[date.getDay()] !== null) {
 			if (date > repeats[date.getDay()]) {
 				available = true;
 			}
