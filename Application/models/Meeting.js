@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const meetingSchema = mongoose.Schema({
 	meetingTitle: {
@@ -27,7 +28,6 @@ const meetingSchema = mongoose.Schema({
 	},
 	accepted: {
 		type: Boolean,
-		default: false,
 	},
 	date: {
 		type: Date,
@@ -35,6 +35,4 @@ const meetingSchema = mongoose.Schema({
 	},
 });
 
-const Meeting = mongoose.model('Meeting', meetingSchema);
-
-module.exports = Meeting;
+module.exports = Meeting = mongoose.model('Meeting', meetingSchema);

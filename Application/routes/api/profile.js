@@ -7,7 +7,7 @@ const { check, validationResult } = require('express-validator');
 // Want to use middleware
 const auth = require('../../middleware/auth');
 
-// Using 'Meeting' model
+// Using 'Profile' model
 const Profile = require('../../models/Profile');
 
 // @route       GET api/profile
