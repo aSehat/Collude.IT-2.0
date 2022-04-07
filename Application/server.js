@@ -15,6 +15,7 @@ app.use(express.json({ extended: false }));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/chat', require('./routes/api/chat'));
+app.use('/api/availability', require('./routes/api/availability'));
 app.use('/api/message', require('./routes/api/message'));
 
 const PORT = process.env.PORT || 5000;
