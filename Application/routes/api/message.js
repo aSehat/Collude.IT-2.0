@@ -1,61 +1,62 @@
 const express = require('express');
 
-// Want to use middleware
-const User = require('../../models/User');
-const auth = require('../../middleware/auth');
-const Message = require('../../models/Message');
-const Chat = require('../../models/Chat');
+ // Want to use middleware
+ const auth = require('../../middleware/auth');
+ const User = require('../../models/User');
+ const Chat = require('../../models/Chat');
+ const Message = require('../../models/Message');
 
-const router = express.Router();
+ const router = express.Router();
 
-// @route       Post api/message
-// @desc        Sending a new message
-// @access      Public
-router.post('/', auth, async (req,res) => {
-    const { content, chatId } = req.body;
+ // @route       Post api/message
+ // @desc        Sending a new message
+ // @access      Public
+ router.post('/', auth, async (req,res) => {
+     const { content, chatId } = req.body;
 
-    if (!content || !chatId) {
-        console.log("Invalid data passed into request");
-        return res.sendStatus(400);
-    }
+     if (!content || !chatId) {
+         console.log("Invalid data passed into request");
+         return res.sendStatus(400);
+     }
 
-    var newMessage = {
-        sender: req.user.id,
-        content: content,
-        chat: chatId
-    };
+     var newMessage = {
+         sender: req.user.id,
+         content: content,
+         chat: chatId
+     };
 
-    try {
-        var message = await Message.create(newMessage);
+     try {
+         var message = await Message.create(newMessage);
 
-        message = await message.populate("sender", "name");
-        message = await message.populate("chat");
-        message = await User.populate(message, {
-            path: "chat.users",
-            select: "name email"
-        });
+         message = await message.populate("sender", "name");
+         message = await message.populate("chat");
+         message = await User.populate(message, {
+             path: "chat.users",
+             select: "name email"
+         });
 
-        await Chat.findByIdAndUpdate(req.body.chatId, {
-            latestMessage: message
-        });
+         await Chat.findByIdAndUpdate(req.body.chatId, {
+             latestMessage: message
+         });
 
-        res.json(message);
-    } catch (error) {
-        res.status(400);
-        throw new Error(error.message);
-    }
-});
+         res.json(message);
+     } catch (error) {
+         res.status(400);
+         throw new Error(error.message);
+     }
+ });
 
-router.get('/:chatId', auth, async (req, res) => {
-    try {
-        const messages = await Message.find({chat: req.params.chatId})
-            .populate("sender", "name email")
-            .populate("chat");
+ router.get('/:chatId', auth, async (req, res) => {
+     try {
+         const messages = await Message.find({chat: req.params.chatId})
+             .populate("sender", "name email")
+             .populate("chat");
 
-        res.json(messages);
-    } catch (error) {
-        res.status(400);
-        throw new Error(error.message);
-    }
-})
+         res.json(messages);
+     } catch (error) {
+         res.status(400);
+         throw new Error(error.message);
+     }
+ });
 
+ module.exports = router;
