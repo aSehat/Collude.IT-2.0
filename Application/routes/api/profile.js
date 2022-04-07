@@ -16,7 +16,7 @@ const Profile = require('../../models/Profile');
 router.get('/:userId', auth, async (req, res) => {
 	try {
 		// Find user information - password from User collection
-		const profile = await Availability.findOne({ user: req.params.userId });
+		const profile = await Profile.findOne({ user: req.params.userId });
 		if (!profile) {
 			return res.status(404).json({ msg: 'User not found' });
 		}
