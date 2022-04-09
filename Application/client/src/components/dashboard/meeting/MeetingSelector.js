@@ -10,16 +10,11 @@ Date.prototype.addDays = function(days) {
 const dateList = {
 	availabilities: [
         {
-            startDate: new Date(2022, 3, 15),
-            endDate: new Date(2022, 3, 15),
+            startDate: new Date("2022-4-15 12:00 AM"),
+            endDate: new Date("2022-4-15 11:00 PM"),
             repeat: true,
         },
-        {
-            startDate: new Date(2022, 3, 16),
-            endDate: new Date(2022, 3, 16),
-            repeat: false,
-        }
-		
+
 	],
 };
 
@@ -63,7 +58,7 @@ function dateListToTimeSlots(dateList) {
 
 const availableTimeslots = dateListToTimeSlots(dateList);
 
-function MeetingSelector() {
+function MeetingSelector({setTime}) {
   return (
     <div>
         <ScheduleMeeting
@@ -71,7 +66,7 @@ function MeetingSelector() {
         primaryColor="#3f5b85"
         eventDurationInMinutes={60}
         availableTimeslots={availableTimeslots}
-        onStartTimeSelect={time => console.log(time)}
+        onStartTimeSelect={time => setTime(time)}
         />
     </div>
   )

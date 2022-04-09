@@ -8,9 +8,8 @@ import LandingPage from './components/landing/LandingPage';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 
-// import DateSelector from './components/dashboard/dash/Availability';
 import Dashboard from './components/dashboard/dash/Dashboard';
-import MeetingSelector from './components/dashboard/meeting/MeetingSelector';
+import Meetings from './components/dashboard/meeting/Meetings';
 
 
 //Redux
@@ -38,11 +37,11 @@ const App = () => {
 					<Navbar />
 					<Routes>
 						{/* <Route path='/' element={<LandingPage />} /> */}
-						<Route path='/' element={<Login />} />
-						<Route path='/register' element={<Register />} />
-						<Route path='/login' element={<Login />} />
-						<Route path='/dashboard' element={<Dashboard />} />
-                        <Route path='/meetings' element={<MeetingSelector />} />
+						<Route path='/' element={<Login/>} />
+						<Route path='/register' element={<Register/>} />
+						<Route path='/login' element={<Login/>} />
+						<Route path='/dashboard' element={<Dashboard/>} />
+                        <Route path='/meetings' element={<Meetings/>} />
 					</Routes>
 				</Fragment>
 			</Router>
