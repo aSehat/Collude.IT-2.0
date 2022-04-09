@@ -10,6 +10,8 @@ import Login from './components/auth/Login';
 
 // import DateSelector from './components/dashboard/dash/Availability';
 import Dashboard from './components/dashboard/dash/Dashboard';
+import MeetingSelector from './components/dashboard/meeting/MeetingSelector';
+
 
 //Redux
 import { Provider } from 'react-redux';
@@ -40,6 +42,7 @@ const App = () => {
 						<Route path='/register' element={<Register />} />
 						<Route path='/login' element={<Login />} />
 						<Route path='/dashboard' element={<Dashboard />} />
+                        <Route path='/meetings' element={<MeetingSelector />} />
 					</Routes>
 				</Fragment>
 			</Router>
