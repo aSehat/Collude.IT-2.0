@@ -8,9 +8,10 @@ import LandingPage from './components/landing/LandingPage';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 
-// import DateSelector from './components/dashboard/dash/Availability';
 import Dashboard from './components/dashboard/dash/Dashboard';
+import Meetings from './components/dashboard/meeting/Meetings';
 import Chat from './components/dashboard/chat/Chat';
+
 
 //Redux
 import { Provider } from 'react-redux';
@@ -42,6 +43,7 @@ const App = () => {
 						<Route path='/login' element={<Login />} />
 						<Route path='/dashboard' element={<Dashboard />} />
 						<Route path="/chat" element={<Chat />} />
+            <Route path='/meetings' element={<Meetings/>} />
 					</Routes>
 				</Fragment>
 			</Router>
