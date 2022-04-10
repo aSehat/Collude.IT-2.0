@@ -9,11 +9,18 @@ import { FormControl, Input } from "@mui/material";
 import axios from "axios";
 import ScrollableChat from "./ScrollableChat";
 import "./styles/styles.css";
+import io from "socket.io-client";
+
+
+//Variable value will change on deployment
+const ENDPOINT = "http://localhost:4000";
+var socket, selectedChatCompare;
 
 const SingleChat = ({ auth: { user }, selectedChat, setSelectedChat }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const [socketConnected, setSocketConnected] = useState(false);
 
   const getSender = (loggedUser, users) => {
     return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
@@ -32,6 +39,8 @@ const SingleChat = ({ auth: { user }, selectedChat, setSelectedChat }) => {
       setMessages(data);
       setLoading(false);
 
+      socket.emit('join chat', selectedChat._id);
+
     } catch (error) {
       console.log(error);
     }
@@ -46,7 +55,7 @@ const SingleChat = ({ auth: { user }, selectedChat, setSelectedChat }) => {
           chatId: selectedChat._id
         });
 
-        console.log(data);
+        socket.emit('new message', data);
 
         setMessages([...messages, data]);
       } catch (error) {
@@ -60,8 +69,26 @@ const SingleChat = ({ auth: { user }, selectedChat, setSelectedChat }) => {
   };
 
   useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => setSocketConnected(true));
+  }, []);
+
+  useEffect(() => {
     fetchMessages();
+
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
+        // give notification
+      } else {
+        setMessages([...messages, newMessageReceived]);
+      }
+    })
+  });
   
 
   return (
