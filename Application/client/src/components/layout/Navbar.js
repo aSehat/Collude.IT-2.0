@@ -12,6 +12,13 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
 	const authLinks = (
 		<ul>
 			<li>
+				<Link to='/chat'>
+					<i></i>{' '}
+					{/* TODO: Add css class that hides the text when on a small screen */}
+					<span>Chats</span>
+				</Link>
+			</li>
+			<li>
 				<Link to='/dashboard'>
 					<i></i>{' '}
 					{/* TODO: Add css class that hides the text when on a small screen */}

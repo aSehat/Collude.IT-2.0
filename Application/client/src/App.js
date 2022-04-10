@@ -10,6 +10,7 @@ import Login from './components/auth/Login';
 
 import Dashboard from './components/dashboard/dash/Dashboard';
 import Meetings from './components/dashboard/meeting/Meetings';
+import Chat from './components/dashboard/chat/Chat';
 
 
 //Redux
@@ -37,11 +38,12 @@ const App = () => {
 					<Navbar />
 					<Routes>
 						{/* <Route path='/' element={<LandingPage />} /> */}
-						<Route path='/' element={<Login/>} />
-						<Route path='/register' element={<Register/>} />
-						<Route path='/login' element={<Login/>} />
-						<Route path='/dashboard' element={<Dashboard/>} />
-                        <Route path='/meetings' element={<Meetings/>} />
+						<Route path='/' element={<Login />} />
+						<Route path='/register' element={<Register />} />
+						<Route path='/login' element={<Login />} />
+						<Route path='/dashboard' element={<Dashboard />} />
+						<Route path="/chat" element={<Chat />} />
+            <Route path='/meetings' element={<Meetings/>} />
 					</Routes>
 				</Fragment>
 			</Router>
