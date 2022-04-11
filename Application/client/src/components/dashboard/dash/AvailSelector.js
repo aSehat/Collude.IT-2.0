@@ -84,7 +84,7 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 			}
 			setTimeList(rangeTuples);
 		}
-	}, [availabilities, repeats]);
+	}, [selectedDate, availabilities, repeats]);
 
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
@@ -97,21 +97,7 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 		setEndTime(target.value);
 	};
 
-	// When the form is changed, update the state values:
-
-	// const [formData, setFormData] = React.useState({
-	// 	startDate: startTime,
-	// 	endDate: endTime,
-	// 	repeat: false,
-	// });
-
 	const [checked, setChecked] = React.useState(false);
-
-	// const { startDate, endDate, repeat } = formData;
-
-	// const onChange = (e) => {
-	// 	setFormData({ ...formData, [e.target.name]: e.target.value });
-	// };
 
 	const onCheck = (e) => {
 		setChecked(!checked);

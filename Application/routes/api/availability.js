@@ -65,9 +65,8 @@ router.put('/', auth, async (req, res) => {
 
 			userAvails.availabilities.unshift(newAvail);
 			await userAvails.save();
-
-			return res.json(newAvail);
-			// return res.json(userAvails.availabilities);
+			// return res.json(newAvail);
+			return res.json(userAvails.availabilities);
 		}
 
 		const availFields = {};

@@ -39,7 +39,7 @@ const Availability = ({ availability: { availabilities } }) => {
 			return filStartDate.toDateString() === date.toDateString();
 		});
 		setAvails(newAvail);
-	}, [date]);
+	}, [date, availabilities]);
 
 	return (
 		<div className='availability'>
