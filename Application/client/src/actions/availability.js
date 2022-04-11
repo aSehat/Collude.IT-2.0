@@ -4,6 +4,8 @@ import {
 	GET_AVAILABILITY,
 	ADD_AVAILABILITY,
 	ADD_AVAILABILITY_ERROR,
+	REMOVE_AVAILABILITY,
+	REMOVE_AVAILABILITY_ERROR,
 } from './types';
 
 // Get current users profile
@@ -47,6 +49,30 @@ export const addAvailability = (formData) => async (dispatch) => {
 		// If something goes wrong dispatch register fail
 		dispatch({
 			type: ADD_AVAILABILITY_ERROR,
+			// Don't need to attach payload since the reducer for register_fail doesn't utilize one
+		});
+	}
+};
+
+// Remove Availability
+export const removeAvailability = (id) => async (dispatch) => {
+	try {
+		const res = await axios.delete(`/api/availability/${id}`);
+
+		dispatch({
+			type: REMOVE_AVAILABILITY,
+			payload: res.data,
+		});
+	} catch (err) {
+		// Variable to store the alerts sent back by the api
+		const errors = err.response.data.errors;
+
+		if (errors) {
+			console.log(errors);
+		}
+		// If something goes wrong dispatch register fail
+		dispatch({
+			type: REMOVE_AVAILABILITY_ERROR,
 			// Don't need to attach payload since the reducer for register_fail doesn't utilize one
 		});
 	}

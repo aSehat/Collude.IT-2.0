@@ -4,6 +4,8 @@ import {
 	CLEAR_AVAILABILITY,
 	ADD_AVAILABILITY,
 	ADD_AVAILABILITY_ERROR,
+	REMOVE_AVAILABILITY,
+	REMOVE_AVAILABILITY_ERROR,
 } from '../actions/types';
 
 const initialState = {
@@ -23,6 +25,7 @@ export default function (state = initialState, action) {
 				loading: false,
 			};
 		case ADD_AVAILABILITY:
+		case REMOVE_AVAILABILITY:
 			return {
 				...state,
 				availabilities: payload,
@@ -30,6 +33,7 @@ export default function (state = initialState, action) {
 			};
 		case AVAILABILITY_ERROR:
 		case ADD_AVAILABILITY_ERROR:
+		case REMOVE_AVAILABILITY_ERROR:
 			return {
 				...state,
 				error: payload,
