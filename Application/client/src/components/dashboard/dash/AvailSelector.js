@@ -6,7 +6,10 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addAvailability } from '../../../actions/availability';
+import {
+	addAvailability,
+	removeAvailability,
+} from '../../../actions/availability';
 
 const style = {
 	position: 'absolute',
@@ -204,7 +207,12 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 							<span className='timeRange'>
 								{time[0]} - {time[1]}
 							</span>
-							<span className='fas fa-minus-circle'></span>
+							<span
+								onClick={() => {
+									dispatch(removeAvailability(time[2]));
+								}}
+								className='fas fa-minus-circle'
+							></span>
 						</div>
 					);
 				})}
