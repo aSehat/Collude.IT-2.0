@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Button, Modal, Box } from '@mui/material';
 import styles from '../styles/AvailSelector.module.css';
+import moment from 'moment';
 
 const style = {
 	position: 'absolute',
@@ -15,37 +16,52 @@ const style = {
 	p: 4,
 };
 
-function formatAMPM(time24) {
-	var tmpArr = time24.split(':'),
-		time12;
-	if (+tmpArr[0] === 12) {
-		time12 = tmpArr[0] + ':' + tmpArr[1] + ' PM';
-	} else {
-		if (+tmpArr[0][0] === 0 && +tmpArr[0][1] === 0) {
-			time12 = '12:' + tmpArr[1] + ' AM';
-		} else {
-			if (+tmpArr[0] > 12) {
-				time12 = +tmpArr[0] - 12 + ':' + tmpArr[1] + ' PM';
-			} else {
-				time12 = +tmpArr[0] + ':' + tmpArr[1] + ' AM';
-			}
-		}
-	}
-	return time12;
-}
-
-const AvailSelector = ({ selectedDate }) => {
-	const [open, setOpen] = React.useState(false);
+const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 	const [timeList, setTimeList] = React.useState([]);
+	const [open, setOpen] = React.useState(false);
 
 	const [startTime, setStartTime] = React.useState('00:00');
 	const [endTime, setEndTime] = React.useState('23:59');
+
+	const [combined, setCombined] = React.useState([]);
+
+	useEffect(() => {
+		setTimeList([]);
+		var weekDay = selectedDate.getDay();
+
+		// Combine the availabilities array with the repeats[weekDay] array removing duplicates
+		var allAvails = availabilities;
+		allAvails.push.apply(allAvails, repeats[weekDay]);
+
+		// Remove duplicates using a set
+		var reducedAvails = [...new Set(allAvails)];
+
+		setCombined(reducedAvails);
+
+		// Sort reducedAvails by .startDate
+		reducedAvails.sort((a, b) => {
+			return new Date(a.startDate) - new Date(b.startDate);
+		});
+
+		var rangeTuples = [];
+		for (let i = 0; i < reducedAvails.length; i++) {
+			const curStartDate = new Date(reducedAvails[i].startDate);
+			const curEndDate = new Date(reducedAvails[i].endDate);
+
+			// Append rangeTuples with a list of tuples with the first value as a time range and the second value as the ._id
+			rangeTuples.push([
+				moment(curStartDate).format('hh:mm A'),
+				moment(curEndDate).format('hh:mm A'),
+				reducedAvails[i]._id,
+			]);
+		}
+		setTimeList(rangeTuples);
+	}, [availabilities, repeats]);
 
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 
 	const updateStartTime = ({ target }) => {
-		console.log(startTime);
 		setStartTime(target.value);
 	};
 
@@ -53,13 +69,38 @@ const AvailSelector = ({ selectedDate }) => {
 		setEndTime(target.value);
 	};
 
-	const handleClick = () => {
-		console.log('val', startTime);
-		setTimeList((timeList) =>
-			timeList.concat(formatAMPM(startTime) + ' - ' + formatAMPM(endTime))
-		);
-		handleClose();
+	// When the form is changed, update the state values:
+
+	const [formData, setFormData] = React.useState({
+		startDate: startTime,
+		endDate: endTime,
+		repeat: false,
+	});
+
+	const { startDate, endDate, repeat } = formData;
+
+	const onChange = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
+
+	const onCheck = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.checked });
+	};
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+		console.log(formData);
+	};
+	// const handleClick = () => {
+	// 	setTimeList((timeList) =>
+	// 		timeList.concat(
+	// 			moment(startTime).format('hh:mm') +
+	// 				' - ' +
+	// 				moment(endTime).format('hh:mm')
+	// 		)
+	// 	);
+	// 	handleClose();
+	// };
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -75,21 +116,22 @@ const AvailSelector = ({ selectedDate }) => {
 			>
 				<Box sx={style} textAlign='center'>
 					<form
-						onSubmit={submitHandler}
+						onSubmit={(e) => onSubmit(e)}
+						// onSubmit={submitHandler}
 						className={styles.timeContainer}
 						noValidate
 					>
-						<h2>
+						{/* <h2>
 							{selectedDate.getMonth()}/{selectedDate.getDate()}/
 							{selectedDate.getFullYear()}
-						</h2>
+						</h2> */}
 						<TextField
 							id='time'
 							label='Start Time'
 							type='time'
 							fullWidth
-							defaultValue={startTime}
-							onChange={updateStartTime}
+							value={startDate}
+							onChange={onChange}
 							className={styles.timeField}
 							InputLabelProps={{
 								shrink: true,
@@ -104,8 +146,8 @@ const AvailSelector = ({ selectedDate }) => {
 							label='End Time'
 							type='time'
 							fullWidth
-							defaultValue={endTime}
-							onChange={updateEndTime}
+							value={endDate}
+							onChange={onChange}
 							className={styles.timeField}
 							InputLabelProps={{
 								shrink: true,
@@ -116,22 +158,33 @@ const AvailSelector = ({ selectedDate }) => {
 						/>
 						<br />
 						<br />
+						<input
+							type='checkbox'
+							id='repeat'
+							name='repeat'
+							// checked
+							value={repeat}
+							onChange={onCheck}
+						></input>
+						<label htmlFor='repeat'>Repeat</label>
 
-						<Button
-							onClick={handleClick}
+						<input
 							variant='contained'
 							color='primary'
 							className='centeredHor'
-						>
-							SUBMIT
-						</Button>
+							type='submit'
+						/>
 					</form>
 				</Box>
 			</Modal>
 
 			<div>
 				{timeList.map((time) => {
-					return <div key={time}>{time}</div>;
+					return (
+						<div key={time[2]}>
+							{time[0]} - {time[1]}
+						</div>
+					);
 				})}
 			</div>
 

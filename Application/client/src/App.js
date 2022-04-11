@@ -12,7 +12,6 @@ import Dashboard from './components/dashboard/dash/Dashboard';
 import Meetings from './components/dashboard/meeting/Meetings';
 import Chat from './components/dashboard/chat/Chat';
 
-
 //Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -21,6 +20,7 @@ import setAuthToken from './utils/setAuthToken';
 
 import { loadUser } from './actions/auth';
 import PrivateRoute from './components/routing/PrivateRoute';
+import { getSelfAvailability } from './actions/availability';
 
 if (localStorage.token) {
 	setAuthToken(localStorage.token);
@@ -42,8 +42,8 @@ const App = () => {
 						<Route path='/register' element={<Register />} />
 						<Route path='/login' element={<Login />} />
 						<Route path='/dashboard' element={<Dashboard />} />
-						<Route path="/chat" element={<Chat />} />
-            <Route path='/meetings' element={<Meetings/>} />
+						<Route path='/chat' element={<Chat />} />
+						<Route path='/meetings' element={<Meetings />} />
 					</Routes>
 				</Fragment>
 			</Router>

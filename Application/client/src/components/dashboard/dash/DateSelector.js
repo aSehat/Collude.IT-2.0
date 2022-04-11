@@ -20,45 +20,30 @@ const CustomPickersDay = styled(PickersDay, {
 	}),
 }));
 
-const dateList = {
-	availabilities: [
-        {
-            startDate: new Date(2022, 3, 15),
-            endDate: new Date(2022, 3, 15),
-            repeat: true,
-        },
-        {
-            startDate: new Date(2022, 3, 16),
-            endDate: new Date(2022, 3, 16),
-            repeat: false,
-        }
-		
-	],
-};
-
-function parseJSONDates() {
+function parseJSONDates(dateList) {
 	// Loop through dateList and return all dates
 	let dates = [];
 	let repeats = [null, null, null, null, null, null, null];
 
-	for (let i = 0; i < dateList.availabilities.length; i++) {
-		const dateObj = dateList.availabilities[i].startDate;
-		dateObj.setTime(
-			dateObj.getTime() + dateObj.getTimezoneOffset() * 60 * 1000
-		);
-		dates.push(dateList.availabilities[i].startDate.toDateString());
-
-		if (dateList.availabilities[i].repeat === true) {
+	for (let i = 0; i < dateList.length; i++) {
+		const dateObj = new Date(dateList[i].startDate);
+		dates.push(dateObj.toDateString());
+		if (dateList[i].repeat === true) {
 			repeats[dateObj.getDay()] = dateObj;
 		}
 	}
-    console.log(dates);
+
 	return [dates, repeats];
 }
 
-export default function DateSelector({ selectionType, setDate, setValid }) {
+export default function DateSelector({
+	selectionType,
+	setDate,
+	setValid,
+	avails,
+}) {
 	const [value, setValue] = React.useState(new Date());
-	const [dates, repeats] = parseJSONDates();
+	const [dates, repeats] = parseJSONDates(avails);
 
 	const renderWeekPickerDay = (date, selectedDates, pickersDayProps) => {
 		let available = false;
@@ -66,7 +51,7 @@ export default function DateSelector({ selectionType, setDate, setValid }) {
 
 		// Check if the date is in the list of dates
 		const isDateInList = dates.includes(date.toDateString());
-        if (repeats[date.getDay()] !== null) {
+		if (repeats[date.getDay()] !== null) {
 			if (date > repeats[date.getDay()]) {
 				available = true;
 			}
@@ -79,7 +64,7 @@ export default function DateSelector({ selectionType, setDate, setValid }) {
 		return (
 			<CustomPickersDay
 				{...pickersDayProps}
-				disabled={disabled}
+				disabled={false}
 				selected={false}
 				// disableMargin
 				isDateInList={isDateInList || available}
