@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Button, Modal, Box } from '@mui/material';
 import styles from '../styles/AvailSelector.module.css';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { addAvailability } from '../../../actions/availability';
 
 const style = {
 	position: 'absolute',
@@ -17,13 +21,16 @@ const style = {
 };
 
 const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
-	const [timeList, setTimeList] = React.useState([]);
-	const [open, setOpen] = React.useState(false);
+	const dispatch = useDispatch();
 
-	const [startTime, setStartTime] = React.useState('00:00');
-	const [endTime, setEndTime] = React.useState('23:59');
+	const [timeList, setTimeList] = useState([]);
+	const [open, setOpen] = useState(false);
 
-	const [combined, setCombined] = React.useState([]);
+	const [startTime, setStartTime] = useState('00:00');
+	const [endTime, setEndTime] = useState('23:59');
+
+	const [combined, setCombined] = useState([]);
+	const [updated, setUpdated] = useState(false);
 
 	useEffect(() => {
 		setTimeList([]);
@@ -43,19 +50,40 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 			return new Date(a.startDate) - new Date(b.startDate);
 		});
 
-		var rangeTuples = [];
+		const selectedYear = selectedDate.getFullYear();
+		const selectedMonth = selectedDate.getMonth();
+		const selectedDay = selectedDate.getDate();
+
+		const rangeTuples = [];
 		for (let i = 0; i < reducedAvails.length; i++) {
 			const curStartDate = new Date(reducedAvails[i].startDate);
 			const curEndDate = new Date(reducedAvails[i].endDate);
 
-			// Append rangeTuples with a list of tuples with the first value as a time range and the second value as the ._id
-			rangeTuples.push([
-				moment(curStartDate).format('hh:mm A'),
-				moment(curEndDate).format('hh:mm A'),
-				reducedAvails[i]._id,
-			]);
+			var sameDayValid =
+				curStartDate.getFullYear() === selectedYear &&
+				curStartDate.getMonth() === selectedMonth &&
+				curStartDate.getDate() === selectedDay &&
+				reducedAvails[i].repeat === true;
+
+			var validRepeat =
+				curStartDate < selectedDate && reducedAvails[i].repeat === true;
+
+			// console.log(curStartDate < selectedDate);
+
+			if (
+				reducedAvails[i].repeat === false ||
+				validRepeat ||
+				sameDayValid
+			) {
+				// Append rangeTuples with a list of tuples with the first value as a time range and the second value as the ._id
+				rangeTuples.push([
+					moment(curStartDate).format('hh:mm A'),
+					moment(curEndDate).format('hh:mm A'),
+					reducedAvails[i]._id,
+				]);
+			}
+			setTimeList(rangeTuples);
 		}
-		setTimeList(rangeTuples);
 	}, [availabilities, repeats]);
 
 	const handleOpen = () => setOpen(true);
@@ -71,39 +99,43 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 
 	// When the form is changed, update the state values:
 
-	const [formData, setFormData] = React.useState({
-		startDate: startTime,
-		endDate: endTime,
-		repeat: false,
-	});
+	// const [formData, setFormData] = React.useState({
+	// 	startDate: startTime,
+	// 	endDate: endTime,
+	// 	repeat: false,
+	// });
 
-	const { startDate, endDate, repeat } = formData;
+	const [checked, setChecked] = React.useState(false);
 
-	const onChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
-	};
+	// const { startDate, endDate, repeat } = formData;
+
+	// const onChange = (e) => {
+	// 	setFormData({ ...formData, [e.target.name]: e.target.value });
+	// };
 
 	const onCheck = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.checked });
+		setChecked(!checked);
 	};
 
 	const onSubmit = (e) => {
-		e.preventDefault();
-		console.log(formData);
-	};
-	// const handleClick = () => {
-	// 	setTimeList((timeList) =>
-	// 		timeList.concat(
-	// 			moment(startTime).format('hh:mm') +
-	// 				' - ' +
-	// 				moment(endTime).format('hh:mm')
-	// 		)
-	// 	);
-	// 	handleClose();
-	// };
+		const formData = {
+			startDate: new Date(
+				`${selectedDate.getFullYear()}-${
+					selectedDate.getMonth() + 1
+				}-${selectedDate.getDate()} ${startTime}`
+			),
+			endDate: new Date(
+				`${selectedDate.getFullYear()}-${
+					selectedDate.getMonth() + 1
+				}-${selectedDate.getDate()} ${endTime}`
+			),
+			repeat: checked,
+		};
 
-	const submitHandler = (e) => {
 		e.preventDefault();
+
+		dispatch(addAvailability(formData));
+		setUpdated(true);
 	};
 
 	return (
@@ -117,21 +149,21 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 				<Box sx={style} textAlign='center'>
 					<form
 						onSubmit={(e) => onSubmit(e)}
-						// onSubmit={submitHandler}
 						className={styles.timeContainer}
 						noValidate
 					>
-						{/* <h2>
+						<h2>
 							{selectedDate.getMonth()}/{selectedDate.getDate()}/
 							{selectedDate.getFullYear()}
-						</h2> */}
+						</h2>
 						<TextField
 							id='time'
 							label='Start Time'
 							type='time'
 							fullWidth
-							value={startDate}
-							onChange={onChange}
+							value={startTime}
+							// onChange={onChange}
+							onChange={updateStartTime}
 							className={styles.timeField}
 							InputLabelProps={{
 								shrink: true,
@@ -146,8 +178,9 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 							label='End Time'
 							type='time'
 							fullWidth
-							value={endDate}
-							onChange={onChange}
+							value={endTime}
+							// onChange={onChange}
+							onChange={updateEndTime}
 							className={styles.timeField}
 							InputLabelProps={{
 								shrink: true,
@@ -163,7 +196,7 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 							id='repeat'
 							name='repeat'
 							// checked
-							value={repeat}
+							value={checked}
 							onChange={onCheck}
 						></input>
 						<label htmlFor='repeat'>Repeat</label>
@@ -182,7 +215,10 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 				{timeList.map((time) => {
 					return (
 						<div key={time[2]}>
-							{time[0]} - {time[1]}
+							<span className='timeRange'>
+								{time[0]} - {time[1]}
+							</span>
+							<span className='fas fa-minus-circle'></span>
 						</div>
 					);
 				})}
@@ -200,5 +236,11 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 		</div>
 	);
 };
-
 export default AvailSelector;
+
+// // Use mapStateToProps when we want to pull a value from the state, in this case updating auth
+// const mapStateToProps = (state) => ({
+// 	// availability: state.availability,
+// });
+
+// export default connect(mapStateToProps, { addAvailability })(AvailSelector);

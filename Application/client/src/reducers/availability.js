@@ -25,8 +25,8 @@ export default function (state = initialState, action) {
 		case ADD_AVAILABILITY:
 			return {
 				...state,
-				availabilities: payload,
-				// availabilities: [payload, ...state.availabilities],
+				// availabilities: payload,
+				availabilities: [payload, ...state.availabilities],
 				loading: false,
 			};
 		case AVAILABILITY_ERROR:
