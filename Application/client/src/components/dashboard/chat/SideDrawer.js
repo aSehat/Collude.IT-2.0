@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import ChatLoading from './ChatLoading';
 import UserListItem from './UserListItem';
 
-const SideDrawer = () => {
+const SideDrawer = ({setSelectedChat}) => {
 
     const [search, setSearch] = useState("");
     const [searchResult, setsearchResult] = useState([]);
@@ -26,8 +26,18 @@ const SideDrawer = () => {
         }
     };
 
-    const accessChat = (userId) => {
+    const accessChat = async (userId) => {
+        try {
+            setLoadingChat(true);
 
+            const { data } = await axios.post("/api/chat", { userId });
+
+            setSelectedChat(data);
+            setLoadingChat(false);
+            onClose();
+        } catch (error) {
+            console.log("Unable to Access Chat");
+        }
     };
 
   return <>
@@ -51,12 +61,12 @@ const SideDrawer = () => {
             {loading ? (
                 <ChatLoading />
             ) : (
-                searchResult.map(resultUser => {
-                    return <div key={resultUser['_id']}>
-                        <UserListItem
-                        user={resultUser} />
-                    </div>
-                })
+                searchResult.map(resultUser => (
+                    <UserListItem
+                        key={resultUser._id}
+                        user={resultUser}
+                        handleFunction={() => accessChat(resultUser._id)} />
+                ))
             )}
       </Box>
   </Drawer>
