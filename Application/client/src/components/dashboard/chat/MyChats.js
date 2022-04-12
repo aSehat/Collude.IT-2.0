@@ -1,66 +1,62 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, Stack } from '@mui/material';
 
+import { connect } from 'react-redux';
+
 import ChatLoading from './ChatLoading';
 
-const MyChats = ({selectedChat, setSelectedChat, fetchAgain, loggedUser}) => {
+import { useDispatch } from 'react-redux';
+import { setChat } from '../../../actions/chat';
 
-    const [chats, setChats] = useState([]);
+const MyChats = ({ selectedChat, chats, user }) => {
+	const dispatch = useDispatch();
 
-    const fetchChats = async () => {
-        try {
-            const {data} = await axios.get(`/api/chat`);
-            console.log(data);
-            setChats(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+	const getSender = (users) => {
+		return users[0]._id === user._id ? users[1].name : users[0].name;
+	};
 
-    const getSender = (loggedUser, users) => {
-        return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
-    }
+	return (
+		<div>
+			<div>My Chats</div>
 
-    useEffect(() => {
-        fetchChats();
-    }, [fetchAgain]);
-    
-  return <>
-  <Box>
-      <Box
-        pb={3}
-        px={3}
-        fontSize={{base: "28px", md: "30px"}}
-        display="flex"
-        width="100%"
-      >
-          My Chats
-      </Box>
-      {chats ? (
-          <Stack>
-              {chats.map((chat) => (
-                  <Box
-                    onClick={() => setSelectedChat(chat)}
-                    cursor="pointer"
-                    bgcolor={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
-                    color={selectedChat === chat ? "white" : "black"}
-                    px={3}
-                    py={2}
-                    borderRadius="lg"
-                    key={chat._id}
-                    >
-                        <span>{!chat.isGroupChat ?
-                        getSender(loggedUser, chat.users)
-                        : chat.chatName}</span>
-                  </Box>
-              ))}
-          </Stack>
-      ) : (
-            <ChatLoading />
-      )}
-   </Box>
-   </>
-}
+			<div>
+				{chats &&
+					chats.map((chat) => (
+						<Box
+							onClick={() => {
+								dispatch(setChat(chat));
+								//Redirect the user to the chat page if they are not already on it
+								if (window.location.pathname !== '/chat') {
+									window.location.href = '/chat';
+								}
+							}}
+							cursor='pointer'
+							bgcolor={
+								selectedChat === chat ? '#01303f' : '#E8E8E8'
+							}
+							color={selectedChat === chat ? 'white' : 'black'}
+							px={3}
+							py={2}
+							borderRadius='lg'
+							key={chat._id}
+							className='chatItem'
+						>
+							<span>
+								{!chat.isGroupChat
+									? getSender(chat.users)
+									: chat.chatName}
+							</span>
+						</Box>
+					))}
+			</div>
+		</div>
+	);
+};
 
-export default MyChats
+const mapStateToProps = (state) => ({
+	user: state.auth.user,
+});
+
+// export default MyChats;
+export default connect(mapStateToProps)(MyChats);

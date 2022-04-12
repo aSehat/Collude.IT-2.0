@@ -9,28 +9,24 @@ import SideDrawer from './SideDrawer';
 import MyChats from './MyChats';
 import ChatBox from './ChatBox';
 
-const Chat = ({ auth: { user } }) => {
+const Chat = ({ auth: { user }, chat: { chats, chat } }) => {
 	const [selectedChat, setSelectedChat] = useState({});
 	const [fetchAgain, setFetchAgain] = useState(false);
 
 	return (
-		<div>
-			{user && <SideDrawer setSelectedChat={setSelectedChat} />}
+		<div className='page'>
+			{/* {console.log(chats)} */}
+			{/* {user && <SideDrawer setSelectedChat={setSelectedChat} />} */}
 			<Box display='flex' width='100%'>
-				{user && (
+				{/* {user && (
 					<MyChats
 						selectedChat={selectedChat}
 						setSelectedChat={setSelectedChat}
 						fetchAgain={fetchAgain}
 						loggedUser={user}
 					/>
-				)}
-				{user && (
-					<ChatBox
-						selectedChat={selectedChat}
-						setSelectedChat={setSelectedChat}
-					/>
-				)}
+				)} */}
+				{user && <ChatBox selectedChat={chat} />}
 			</Box>
 		</div>
 	);
@@ -42,6 +38,7 @@ Chat.prototype = {
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
+	chat: state.chat,
 });
 
 export default connect(mapStateToProps)(Chat);

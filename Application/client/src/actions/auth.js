@@ -11,6 +11,7 @@ import {
 	LOGIN_FAIL,
 	LOGOUT,
 	CLEAR_AVAILABILITY,
+	CLEAR_CHATS,
 } from './types';
 
 // Load User
@@ -116,5 +117,8 @@ export const logout = () => (dispatch) => {
 	});
 	dispatch({
 		type: LOGOUT,
+	});
+	dispatch({
+		type: CLEAR_CHATS,
 	});
 };
