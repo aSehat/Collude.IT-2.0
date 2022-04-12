@@ -16,7 +16,7 @@ const Chat = ({auth: {user} }) => {
   
   return (
     <div>
-        {user && <SideDrawer />}
+        {user && <SideDrawer setSelectedChat={setSelectedChat} />}
         <Box
         display="flex"
         width="100%"
