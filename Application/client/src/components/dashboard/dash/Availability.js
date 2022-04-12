@@ -43,7 +43,7 @@ const Availability = ({ availability: { availabilities } }) => {
 
 	return (
 		<div className='availability'>
-			<div className='titleAvailability'>
+			<div>
 				<h2>Availability</h2>
 				<h3>Keep Your Schedule Up to Date</h3>
 			</div>
