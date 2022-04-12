@@ -121,7 +121,12 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 			repeat: checked,
 		};
 
-		e.preventDefault();
+        e.preventDefault();
+
+        if (formData.startDate > formData.endDate){
+            alert('Start time must be before end time');
+            return;
+        }
 
 		dispatch(addAvailability(formData));
 		setUpdated(true);
@@ -129,95 +134,91 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 
 	return (
 		<div>
-			<Modal
-				open={open}
-				onClose={handleClose}
-				aria-labelledby='modal-modal-title'
-				aria-describedby='modal-modal-description'
-			>
-				<Box sx={style} textAlign='center'>
-					<form
-						onSubmit={(e) => onSubmit(e)}
-						className={styles.timeContainer}
-						noValidate
-					>
-						<h2>
-							{selectedDate.getMonth()}/{selectedDate.getDate()}/
-							{selectedDate.getFullYear()}
-						</h2>
-						<TextField
-							id='time'
-							label='Start Time'
-							type='time'
-							fullWidth
-							value={startTime}
-							// onChange={onChange}
-							onChange={updateStartTime}
-							className={styles.timeField}
-							InputLabelProps={{
-								shrink: true,
-							}}
-							inputProps={{
-								step: 300, // 5 min
-							}}
-						/>
+            <div>
+                <Box textAlign='center'>
+                    <form
+                        onSubmit={(e) => onSubmit(e)}
+                        className={styles.timeContainer}
+                        noValidate
+                    >
+                        <h2>
+                            {selectedDate.getMonth() + 1}/{selectedDate.getDate()}/
+                            {selectedDate.getFullYear()}
+                        </h2>
+                        <div className='enterTime'>
+                            <TextField
+                                id='time'
+                                label='Start Time'
+                                type='time'
+                                fullWidth
+                                value={startTime}
+                                // onChange={onChange}
+                                onChange={updateStartTime}
+                                className='timeBox'
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                inputProps={{
+                                    step: 300, // 5 min
+                                }}
+                            />
 
-						<TextField
-							id='time'
-							label='End Time'
-							type='time'
-							fullWidth
-							value={endTime}
-							// onChange={onChange}
-							onChange={updateEndTime}
-							className={styles.timeField}
-							InputLabelProps={{
-								shrink: true,
-							}}
-							inputProps={{
-								step: 300, // 5 min
-							}}
-						/>
-						<br />
-						<br />
-						<input
-							type='checkbox'
-							id='repeat'
-							name='repeat'
-							// checked
-							value={checked}
-							onChange={onCheck}
-						></input>
-						<label htmlFor='repeat'>Repeat</label>
+                            <TextField
+                                id='time'
+                                label='End Time'
+                                type='time'
+                                fullWidth
+                                value={endTime}
+                                // onChange={onChange}
+                                onChange={updateEndTime}
+                                className='timeBox'
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                inputProps={{
+                                    step: 300, // 5 min
+                                }}
+                            />
+                        </div>
+                        
+                        <br />
+                        <br />
+                        <input
+                            type='checkbox'
+                            id='repeat'
+                            name='repeat'
+                            // checked
+                            value={checked}
+                            onChange={onCheck}
+                        ></input>
+                        <label htmlFor='repeat'>Repeat</label>
 
-						<input
-							variant='contained'
-							color='primary'
-							className='centeredHor'
-							type='submit'
-						/>
-					</form>
-				</Box>
-			</Modal>
-
-			<div>
+                        <input
+                            variant='contained'
+                            color='primary'
+                            className='centeredHor'
+                            type='submit'
+                        />
+                    </form>
+                </Box>
+            </div>
+            <div>
 				{timeList.map((time) => {
 					return (
-						<div key={time[2]}>
-							<span className='timeRange'>
-								{time[0]} - {time[1]}
-							</span>
-							<span
-								onClick={() => {
-									dispatch(removeAvailability(time[2]));
-								}}
-								className='fas fa-minus-circle'
-							></span>
-						</div>
+                            <div key={time[2]}>
+                                <span className='timeRange'>
+                                    {time[0]} - {time[1]}
+                                </span>
+                                <span
+                                    onClick={() => {
+                                        dispatch(removeAvailability(time[2]));
+                                    }}
+                                    className='fas fa-minus-circle'
+                                ></span>
+                            </div>
 					);
 				})}
 			</div>
-
 			{selectedDate.getDate() > 0 && (
 				<Button
 					onClick={handleOpen}
