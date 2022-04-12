@@ -2,18 +2,31 @@ import React, { Fragment } from 'react';
 import Availability from './Availability';
 import Meetings from './Meetings';
 import Sidebar from '../sidebar/Sidebar';
+import { connect } from 'react-redux';
 
-const Dashboard = () => {
+const Dashboard = ({ auth: { user } }) => {
 	return (
-		<div className='page'>
-			<Sidebar />
-			<div className='header'>
-				<h1>Welcome Back!</h1>
-			</div>
-			<Meetings />
-			<Availability />
-		</div>
+		<Fragment>
+			{user && (
+				<div className='page'>
+					{/* <div className='header'>
+						<h1>Welcome Back {user.name}! </h1>
+					</div> */}
+					{/* <Sidebar /> */}
+					<div className='dashLeft'>
+						<Meetings />
+					</div>
+					<div className='dashRight'>
+						<Availability />
+					</div>
+				</div>
+			)}
+		</Fragment>
 	);
 };
 
-export default Dashboard;
+const mapStateToProps = (state) => ({
+	auth: state.auth,
+});
+
+export default connect(mapStateToProps, {})(Dashboard);

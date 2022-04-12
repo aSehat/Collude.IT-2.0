@@ -15,7 +15,7 @@ import io from 'socket.io-client';
 const ENDPOINT = 'http://localhost:5000';
 var socket, selectedChatCompare;
 
-const SingleChat = ({ auth: { user }, selectedChat, setSelectedChat }) => {
+const SingleChat = ({ auth: { user }, selectedChat }) => {
 	const [messages, setMessages] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [newMessage, setNewMessage] = useState('');

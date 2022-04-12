@@ -22,6 +22,8 @@ import { loadUser } from './actions/auth';
 import PrivateRoute from './components/routing/PrivateRoute';
 import { getSelfAvailability } from './actions/availability';
 
+import Sidebar from './components/layout/sideBar';
+
 if (localStorage.token) {
 	setAuthToken(localStorage.token);
 }
@@ -36,6 +38,7 @@ const App = () => {
 			<Router>
 				<Fragment>
 					<Navbar />
+					<Sidebar />
 					<Routes>
 						{/* <Route path='/' element={<LandingPage />} /> */}
 						<Route path='/' element={<Login />} />
