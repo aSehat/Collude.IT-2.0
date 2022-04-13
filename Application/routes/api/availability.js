@@ -45,7 +45,7 @@ router.get('/:userId', auth, async (req, res) => {
 // @desc        Add a singular slot of availability
 // @access      Private
 // Use second parameter 'auth' to use the middleware -- the addition makes it PROTECTED
-router.put('/', auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		return res.status(400).json({ errors: errors.array() });
@@ -56,13 +56,14 @@ router.put('/', auth, async (req, res) => {
 	try {
 		let userAvails = await Availability.findOne({ user: req.user.id });
 		// If there is already an availability for this user, update it
-		if (userAvails) {
+		if (userAvails !== null) {
 			const newAvail = {
 				startDate: startDate,
 				endDate: endDate,
 				repeat: repeat,
 			};
 
+			console.log(userAvails);
 			userAvails.availabilities.unshift(newAvail);
 			await userAvails.save();
 			// return res.json(newAvail);

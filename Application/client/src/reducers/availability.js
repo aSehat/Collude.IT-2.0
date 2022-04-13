@@ -1,5 +1,6 @@
 import {
 	GET_AVAILABILITY,
+	GET_OTHER_AVAILABILITY,
 	AVAILABILITY_ERROR,
 	CLEAR_AVAILABILITY,
 	ADD_AVAILABILITY,
@@ -10,6 +11,7 @@ import {
 
 const initialState = {
 	availabilities: [],
+	otherAvails: [],
 	loading: true,
 	error: {},
 };
@@ -22,6 +24,12 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				availabilities: payload,
+				loading: false,
+			};
+		case GET_OTHER_AVAILABILITY:
+			return {
+				...state,
+				otherAvails: payload,
 				loading: false,
 			};
 		case ADD_AVAILABILITY:
@@ -43,6 +51,7 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				availabilities: [],
+				otherAvails: [],
 				loading: false,
 			};
 		default:

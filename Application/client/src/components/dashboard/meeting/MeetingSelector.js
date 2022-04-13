@@ -1,20 +1,19 @@
-import React from 'react'
-import { ScheduleMeeting } from "react-schedule-meeting";
+import React from 'react';
+import { ScheduleMeeting } from 'react-schedule-meeting';
 
-Date.prototype.addDays = function(days) {
-    var date = new Date(this.valueOf());
-    date.setDate(date.getDate() + days);
-    return date;
-}
+Date.prototype.addDays = function (days) {
+	var date = new Date(this.valueOf());
+	date.setDate(date.getDate() + days);
+	return date;
+};
 
 const dateList = {
 	availabilities: [
-        {
-            startDate: new Date("2022-4-15 12:00 AM"),
-            endDate: new Date("2022-4-15 11:00 PM"),
-            repeat: true,
-        },
-
+		{
+			startDate: new Date('2022-4-15 12:00 AM'),
+			endDate: new Date('2022-4-15 11:00 PM'),
+			repeat: true,
+		},
 	],
 };
 
@@ -30,46 +29,67 @@ const dateList = {
 //     };
 //   });
 
-
 function dateListToTimeSlots(dateList) {
-    let id = 0;
-    let timeSlots = [];
-    for(let i = 0; i < dateList.availabilities.length; i++) {
-        let slot = {};
-        slot.id = id;
-        id++;
-        slot.startTime = dateList.availabilities[i].startDate;
-        slot.endTime = dateList.availabilities[i].endDate;
-        timeSlots.push(slot);
+	let id = 0;
+	let timeSlots = [];
+	// console.log(dateList.personAvails);
+	const today = new Date();
+	for (let i = 0; i < dateList.length; i++) {
+		let slot = {};
+		slot.id = id;
+		id++;
+		slot.startTime = new Date(dateList[i].startDate);
+		slot.endTime = new Date(dateList[i].endDate);
 
-        if (dateList.availabilities[i].repeat) {
-            for(let j = 1; j < 5; j++){
-                let slot = {};
-                slot.id = id;
-                id++;
-                slot.startTime = dateList.availabilities[i].startDate.addDays(j * 7);
-                slot.endTime = dateList.availabilities[i].endDate.addDays(j * 7);
-                timeSlots.push(slot);
-            }
-        }
-    }
-    return timeSlots;
-};
+		if (slot.startTime >= today) {
+			timeSlots.push(slot);
+		}
 
-const availableTimeslots = dateListToTimeSlots(dateList);
+		if (dateList[i].repeat) {
+			for (let j = 1; j < 5; j++) {
+				let slot = {};
+				slot.id = id;
+				id++;
+				slot.startTime = new Date(dateList[i].startDate).addDays(j * 7);
+				slot.endTime = new Date(dateList[i].endDate).addDays(j * 7);
 
-function MeetingSelector({setTime}) {
-  return (
-    <div>
-        <ScheduleMeeting
-        borderRadius={10}
-        primaryColor="#3f5b85"
-        eventDurationInMinutes={60}
-        availableTimeslots={availableTimeslots}
-        onStartTimeSelect={time => setTime(time)}
-        />
-    </div>
-  )
+				if (slot.startTime >= today) {
+					timeSlots.push(slot);
+				}
+			}
+		}
+	}
+	return timeSlots;
+}
+
+function MeetingSelector({
+	setTime,
+	setMeetingTitle,
+	handleClose,
+	submitRequest,
+	personAvails,
+}) {
+	const availableTimeslots = dateListToTimeSlots(
+		{ personAvails }.personAvails
+	);
+
+	return (
+		<div>
+			<ScheduleMeeting
+				borderRadius={10}
+				primaryColor='#3f5b85'
+				eventDurationInMinutes={60}
+				availableTimeslots={availableTimeslots}
+				onStartTimeSelect={(time) => {
+					setTime(time);
+					submitRequest();
+					setMeetingTitle('');
+					handleClose();
+				}}
+				className='blah'
+			/>
+		</div>
+	);
 }
 
 export default MeetingSelector;

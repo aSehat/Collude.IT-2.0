@@ -39,6 +39,7 @@ const ScrollableChat = ({ auth: { user }, messages }) => {
 										: '#B9F5D0'
 								}`,
 								borderRadius: '20px',
+								fontSize: '24px',
 								padding: '5px 15px',
 								maxWidth: '75%',
 								marginLeft: isSameSenderMargin(
