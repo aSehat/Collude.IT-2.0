@@ -353,3 +353,76 @@ p {
 	border-radius: 20px;
 	padding: 25px;
 }
+
+.meetingRequest {
+	min-width: 500px;
+	max-width: 650px;
+	height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 35px;
+	padding: 15px;
+	padding-left: 25px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	background-color: white;
+	box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.3);
+}
+
+.meetingContent {
+	display: inline-block;
+	width: 75%;
+	height: 100%;
+	vertical-align: top;
+}
+
+.meetingControls {
+	display: inline-block;
+	width: 25%;
+	height: 100%;
+	vertical-align: top;
+}
+
+.buttonContainer {
+	display: inline-block;
+	margin-left: 10px;
+	font-size: 35px;
+	text-align: center;
+	width: 65px;
+	height: 65px;
+	border-radius: 50%;
+	border-color: #01303f;
+	border-style: solid;
+	border-width: 4px;
+	background-color: white;
+}
+
+.buttonContainer:hover {
+	background-color: #01303f;
+	color: white;
+}
+
+.buttonContainer:active {
+	width: 63px;
+	height: 63px;
+}
+
+.declineButton {
+	color: #e05b54;
+}
+
+.acceptButton {
+	color: #7ec071;
+}
+
+.selectedBad, .selectedBad:hover {
+	background-color: #01303f;
+	color: #e05b54;
+	margin-left: 75px;
+}
+
+.selectedGood, .selectedGood:hover {
+	background-color: #01303f;
+	color: #7ec071;
+	margin-left: 75px;
+}

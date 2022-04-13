@@ -4,7 +4,9 @@ import ScrollableFeed from 'react-scrollable-feed';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const ScrollableChat = ({ auth: { user }, messages }) => {
+import MeetingChat from './MeetingChat';
+
+const ScrollableChat = ({ auth: { user }, messages, update, setUpdate }) => {
 	const isSameSenderMargin = (messages, m, i, userId) => {
 		if (
 			i < messages.length - 1 &&
@@ -30,30 +32,51 @@ const ScrollableChat = ({ auth: { user }, messages }) => {
 		<ScrollableFeed>
 			{messages &&
 				messages.map((m, i) => (
-					<div style={{ display: 'flex' }} key={m._id}>
-						<span
-							style={{
-								backgroundColor: `${
-									m.sender._id === user._id
-										? '#BEE3F8'
-										: '#B9F5D0'
-								}`,
-								borderRadius: '20px',
-								fontSize: '24px',
-								padding: '5px 15px',
-								maxWidth: '75%',
-								marginLeft: isSameSenderMargin(
-									messages,
-									m,
-									i,
-									user._id
-								),
-								marginTop: isSameUser(messages, m, i) ? 3 : 10,
-							}}
-						>
-							{m.content}
-						</span>
-					</div>
+					<>
+						{
+							/* console.log if m has a meetingTitle attribute */
+							m.meetingTitle ? (
+								<MeetingChat
+									message={m}
+									update={update}
+									setUpdate={setUpdate}
+									user={user._id}
+								/>
+							) : (
+								<div style={{ display: 'flex' }} key={m._id}>
+									{console.log(m)}
+									<span
+										style={{
+											backgroundColor: `${
+												m.sender._id === user._id
+													? '#BEE3F8'
+													: '#B9F5D0'
+											}`,
+											borderRadius: '20px',
+											fontSize: '24px',
+											padding: '5px 15px',
+											maxWidth: '75%',
+											marginLeft: isSameSenderMargin(
+												messages,
+												m,
+												i,
+												user._id
+											),
+											marginTop: isSameUser(
+												messages,
+												m,
+												i
+											)
+												? 3
+												: 10,
+										}}
+									>
+										{m.content}
+									</span>
+								</div>
+							)
+						}
+					</>
 				))}
 		</ScrollableFeed>
 	);

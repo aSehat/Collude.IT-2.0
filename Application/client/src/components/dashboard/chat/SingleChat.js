@@ -80,21 +80,24 @@ const SingleChat = ({
 	};
 
 	const submitRequest = async (event) => {
-		try {
-			setNewMessage('');
-			console.log('Submit Request');
-			const { data } = await axios.post('/api/message', {
-				chatId: selectedChat._id,
-				content: 'Meeting Requested',
-				meetingTitle: meetingTitle,
-				startDate: time,
-			});
+		// Only send request if meetingTitle is not empty
+		if (meetingTitle !== '') {
+			try {
+				setNewMessage('');
+				console.log('Submit Request');
+				const { data } = await axios.post('/api/message', {
+					chatId: selectedChat._id,
+					content: 'Meeting Requested',
+					meetingTitle: meetingTitle,
+					startDate: time.startTime,
+				});
 
-			socket.emit('new message', data);
-			console.log('Socket Emited');
-			setMessages([...messages, data]);
-		} catch (error) {
-			console.log(error);
+				socket.emit('new message', data);
+				console.log('Socket Emited');
+				setMessages([...messages, data]);
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	};
 
@@ -113,11 +116,12 @@ const SingleChat = ({
 		socket.on('connection', () => setSocketConnected(true));
 	}, []);
 
+	const [update, setUpdate] = useState(false);
+
 	useEffect(() => {
 		fetchMessages();
-
 		selectedChatCompare = selectedChat;
-	}, [selectedChat]);
+	}, [selectedChat, update]);
 
 	useEffect(() => {
 		socket.on('message received', (newMessageReceived) => {
@@ -175,7 +179,11 @@ const SingleChat = ({
 					</h1>
 					<div className='sepLine'></div>
 					<div className='messages'>
-						<ScrollableChat messages={messages} />
+						<ScrollableChat
+							messages={messages}
+							update={update}
+							setUpdate={setUpdate}
+						/>
 					</div>
 					<FormControl
 						onKeyDown={sendMessage}

@@ -103,6 +103,29 @@ router.get('/:chatId', auth, async (req, res) => {
 	}
 });
 
+// Set the accepted status of a message
+router.post('/:messageId', auth, async (req, res) => {
+	// destructure messageId from request body
+	const { accepted } = req.body;
+	try {
+		// TODO: Store the admin in the message object
+		const message = await Message.findById(req.params.messageId);
+		const chat = await Chat.findById(message.chat);
+		// If message.chat.groupAdmin is not equal to req.user.id, then return error
+		// res.json(chat.groupAdmin == req.user.id);
+		if (String(chat.groupAdmin) !== String(req.user.id)) {
+			return res.status(401).json({ msg: 'User not authorized' });
+		}
+		// TODO: Don't use another search here
+		await Message.findByIdAndUpdate(req.params.messageId, {
+			accepted: accepted,
+		});
+		res.json(message);
+	} catch (error) {
+		console.log(error.message);
+	}
+});
+
 //  const messageSchema = mongoose.Schema(
 // 	{
 // 		sender: {
