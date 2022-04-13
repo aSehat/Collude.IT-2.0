@@ -47,6 +47,7 @@ router.post('/', auth, async (req, res) => {
 				});
 			});
 		}
+
 		await Chat.findByIdAndUpdate(req.body.chatId, {
 			latestMessage: message,
 		});
@@ -104,6 +105,7 @@ router.post('/:messageId', auth, async (req, res) => {
 router.get('/', auth, async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id).populate('meetings');
+
 		res.json(user.meetings);
 	} catch (error) {
 		console.log(error);

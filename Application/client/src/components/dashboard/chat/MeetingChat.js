@@ -43,7 +43,7 @@ const MeetingChat = ({ message, update, setUpdate, user }) => {
 			{message.accepted === undefined ? (
 				<div className='meetingControls'>
 					<button
-						class='buttonContainer'
+						className='buttonContainer'
 						onClick={() => {
 							meetingAccept();
 							setStatus(!status);
@@ -52,7 +52,7 @@ const MeetingChat = ({ message, update, setUpdate, user }) => {
 						<i className='fa-solid fa-calendar-check acceptButton'></i>
 					</button>
 					<button
-						class='buttonContainer'
+						className='buttonContainer'
 						onClick={() => {
 							meetingDecline();
 							setStatus(!status);
@@ -63,14 +63,14 @@ const MeetingChat = ({ message, update, setUpdate, user }) => {
 				</div>
 			) : message.accepted === true ? (
 				<div className='meetingControls'>
-					<button class='buttonContainer selectedGood'>
-						<i class='fa-solid fa-calendar-day'></i>
+					<button className='buttonContainer selectedGood'>
+						<i className='fa-solid fa-calendar-day'></i>
 					</button>
 				</div>
 			) : (
 				<div className='meetingControls'>
-					<button class='buttonContainer selectedBad'>
-						<i class='fa-solid fa-calendar-xmark'></i>
+					<button className='buttonContainer selectedBad'>
+						<i className='fa-solid fa-calendar-xmark'></i>
 					</button>
 				</div>
 			)}

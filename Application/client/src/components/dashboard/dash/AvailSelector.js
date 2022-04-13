@@ -80,7 +80,7 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 			) {
 				// Append rangeTuples with a list of tuples with the first value as a time range and the second value as the ._id
 				rangeTuples.push([
-					moment(curStartDate).format('MM DD hh:mm A'),
+					moment(curStartDate).format('hh:mm A'),
 					moment(curEndDate).format('hh:mm A'),
 					reducedAvails[i]._id,
 				]);
@@ -121,6 +121,11 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 			repeat: checked,
 		};
 
+		if (formData.startDate > formData.endDate) {
+			alert('Start time must be before end time');
+			return;
+		}
+
 		e.preventDefault();
 
 		dispatch(addAvailability(formData));
@@ -128,32 +133,45 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 	};
 
 	return (
-		<div>
-			<Modal
-				open={open}
-				onClose={handleClose}
-				aria-labelledby='modal-modal-title'
-				aria-describedby='modal-modal-description'
-			>
-				<Box sx={style} textAlign='center'>
-					<form
-						onSubmit={(e) => onSubmit(e)}
-						className={styles.timeContainer}
-						noValidate
-					>
-						<h2>
-							{selectedDate.getMonth()}/{selectedDate.getDate()}/
-							{selectedDate.getFullYear()}
-						</h2>
+		<div className='availBox'>
+			<div className='availHeader'>
+				<h2 className='white'>
+					{selectedDate.getMonth() + 1}/{selectedDate.getDate()}/
+					{selectedDate.getFullYear()}
+				</h2>
+			</div>
+			<div className='timeRanges'>
+				{timeList.map((time) => {
+					return (
+						<div key={time[2]}>
+							<span className='timeRange'>
+								{time[0]} - {time[1]} {''}
+							</span>
+							<span
+								onClick={() => {
+									dispatch(removeAvailability(time[2]));
+								}}
+								className='fas fa-minus-circle timeRange'
+							></span>
+						</div>
+					);
+				})}
+			</div>
+			<Box textAlign='center' className='availSubmitForm'>
+				<form
+					onSubmit={(e) => onSubmit(e)}
+					className={styles.timeContainer}
+					noValidate
+				>
+					<div className='dateRangeContainer'>
 						<TextField
 							id='time'
 							label='Start Time'
 							type='time'
-							fullWidth
 							value={startTime}
 							// onChange={onChange}
 							onChange={updateStartTime}
-							className={styles.timeField}
+							className='fromTimeBox'
 							InputLabelProps={{
 								shrink: true,
 							}}
@@ -166,11 +184,10 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 							id='time'
 							label='End Time'
 							type='time'
-							fullWidth
 							value={endTime}
 							// onChange={onChange}
 							onChange={updateEndTime}
-							className={styles.timeField}
+							className='toTimeBox'
 							InputLabelProps={{
 								shrink: true,
 							}}
@@ -178,55 +195,30 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 								step: 300, // 5 min
 							}}
 						/>
-						<br />
-						<br />
-						<input
-							type='checkbox'
-							id='repeat'
-							name='repeat'
-							// checked
-							value={checked}
-							onChange={onCheck}
-						></input>
-						<label htmlFor='repeat'>Repeat</label>
+					</div>
+					<div className='repeatContainer'>
+						<label class='container'>
+							Repeat
+							<input
+								type='checkbox'
+								id='repeat'
+								name='repeat'
+								className='repeatCheckbox'
+								value={checked}
+								onChange={onCheck}
+							></input>
+							<span class='checkmark'></span>
+						</label>
 
 						<input
 							variant='contained'
 							color='primary'
-							className='centeredHor'
+							className='timeSubmit'
 							type='submit'
 						/>
-					</form>
-				</Box>
-			</Modal>
-
-			<div>
-				{timeList.map((time) => {
-					return (
-						<div key={time[2]}>
-							<span className='timeRange'>
-								{time[0]} - {time[1]}
-							</span>
-							<span
-								onClick={() => {
-									dispatch(removeAvailability(time[2]));
-								}}
-								className='fas fa-minus-circle'
-							></span>
-						</div>
-					);
-				})}
-			</div>
-
-			{selectedDate.getDate() > 0 && (
-				<Button
-					onClick={handleOpen}
-					variant='text'
-					className='addAvail'
-				>
-					+ ADD AVAILABILITY
-				</Button>
-			)}
+					</div>
+				</form>
+			</Box>
 		</div>
 	);
 };

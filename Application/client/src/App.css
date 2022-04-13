@@ -183,6 +183,7 @@ p {
 	border-radius: 20px;
 	/* max-width: 1000px; */
 	min-width: 100px;
+	max-height: 170px;
 	margin-left: auto;
 	margin-right: auto;
 	letter-spacing: 2px;
@@ -211,6 +212,20 @@ p {
 	margin-top: 0px;
 	margin-bottom: 0px;
 	width: 100px;
+}
+
+.startBttnDis {
+	background-color: #01303f;
+	color: white;
+	border-radius: 15px;
+	padding: 2px;
+	font-size: 18px;
+	float: right;
+	margin-left: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width: 100px;
+	opacity: 0.5;
 }
 
 .conversBar {
@@ -426,3 +441,153 @@ p {
 	color: #7ec071;
 	margin-left: 75px;
 }
+
+.dateRangeContainer {
+	width: 100%;
+	height: 75px;
+}
+.fromTimeBox {
+	width: 48%;
+	height: 75px;
+	display: flex;
+	float: left;
+}
+
+.toTimeBox {
+	width: 48%;
+	height: 75px;
+	display: flex;
+	float: right;
+}
+
+.repeatContainer {
+	width: 100%;
+	height: 40px;
+}
+
+.timeSubmit {
+	display: inline-block;
+	width: 48%;
+	height: 80%;
+	border-radius: 15px;
+	background-color: #01303f;
+	color: white;
+	font-size: 20px;
+	vertical-align: top;
+}
+.container {
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	width: 50%;
+	cursor: pointer;
+	font-size: 18px;
+	padding: 2px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .container input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 32px;
+	width: 32px;
+	background-color: #eee;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+	background-color: #ccc;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+	background-color: #01303f;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+	display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container .checkmark:after {
+	left: 4px;
+	top: -5px;
+	width: 16px;
+	height: 24px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+  }
+
+  .availBox {
+	  width: 100%;
+	  height: 100%;
+  }
+
+  .white {
+	  color: white;
+  }
+
+  .availHeader {
+	  width: 100%;
+	  height: 17%;
+	  background-color: #01303f;
+	  font-size: 20px;
+	  font-weight: 600;
+	  padding-bottom: 10px;
+	  padding-left: 20px;
+	  padding-right: 20px;
+	  border-radius: 20px;
+  }
+
+  .timeRanges {
+	  width: 100%;
+	  height: 50%;
+	  padding-top: 3px;
+	  padding-bottom: 3px;
+	  margin-bottom: 5px;
+	  border-bottom: 2px solid #01303f;
+	  overflow-y: scroll;
+	  overflow-x: hidden;
+  }
+
+  .timeRanges::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+  .timeRange {
+	  font-size: 22px;
+  }
+
+  .meetingTitle {
+	  font-size: 26px;
+	  font-weight: 700;
+	  color: #01303f;
+	  /* margin-bottom: 10px; */
+  }
+
