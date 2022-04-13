@@ -2,13 +2,13 @@ import axios from 'axios';
 
 import { GET_MEETINGS } from './types';
 
-// Get current users profile
-export const getSelfAvailability = () => async (dispatch) => {
+// Get current users meetings
+export const getMeetings = () => async (dispatch) => {
 	try {
-		const res = await axios.get('/api/availability');
+		const res = await axios.get('/api/message');
 
 		dispatch({
-			type: GET_AVAILABILITY,
+			type: GET_MEETINGS,
 			payload: res.data,
 		});
 	} catch (err) {
