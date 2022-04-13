@@ -16,6 +16,7 @@ import ChatLoading from '../dashboard/chat/ChatLoading';
 import UserListItem from '../dashboard/chat/UserListItem';
 import axios from 'axios';
 import { accessChat } from '../../actions/chat';
+import { getOtherAvailability } from '../../actions/availability';
 
 const SideBar = ({
 	auth: { isAuthenticated, user },

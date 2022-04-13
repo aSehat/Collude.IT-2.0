@@ -80,7 +80,7 @@ const AvailSelector = ({ selectedDate, availabilities, repeats }) => {
 			) {
 				// Append rangeTuples with a list of tuples with the first value as a time range and the second value as the ._id
 				rangeTuples.push([
-					moment(curStartDate).format('hh:mm A'),
+					moment(curStartDate).format('MM DD hh:mm A'),
 					moment(curEndDate).format('hh:mm A'),
 					reducedAvails[i]._id,
 				]);

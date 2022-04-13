@@ -9,10 +9,6 @@ const Dashboard = ({ auth: { user } }) => {
 		<Fragment>
 			{user && (
 				<div className='page'>
-					{/* <div className='header'>
-						<h1>Welcome Back {user.name}! </h1>
-					</div> */}
-					{/* <Sidebar /> */}
 					<div className='dashLeft'>
 						<Meetings />
 					</div>

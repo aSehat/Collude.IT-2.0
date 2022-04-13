@@ -9,12 +9,25 @@ import ChatLoading from './ChatLoading';
 import { useDispatch } from 'react-redux';
 import { setChat } from '../../../actions/chat';
 
+import { getOtherAvailability } from '../../../actions/availability';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 const MyChats = ({ selectedChat, chats, user }) => {
 	const dispatch = useDispatch();
+	let navigate = useNavigate();
+
+	const [redirect, setRedirect] = useState(false);
 
 	const getSender = (users) => {
 		return users[0]._id === user._id ? users[1].name : users[0].name;
 	};
+
+	useEffect(() => {
+		if (redirect) {
+			setRedirect(false);
+			return navigate('/chat');
+		}
+	}, [redirect]);
 
 	return (
 		<div>
@@ -22,30 +35,33 @@ const MyChats = ({ selectedChat, chats, user }) => {
 
 			<div>
 				{chats &&
-					chats.map((chat) => (
+					chats.map((curChat) => (
 						<Box
 							onClick={() => {
-								dispatch(setChat(chat));
-								//Redirect the user to the chat page if they are not already on it
-								if (window.location.pathname !== '/chat') {
-									window.location.href = '/chat';
-								}
+								dispatch(setChat(curChat));
+								console.log(curChat);
+								dispatch(
+									getOtherAvailability(curChat.groupAdmin._id)
+								);
+
+								setRedirect(true);
+								//Navigate to the chat page
 							}}
 							cursor='pointer'
 							bgcolor={
-								selectedChat === chat ? '#01303f' : '#E8E8E8'
+								selectedChat === curChat ? '#01303f' : '#E8E8E8'
 							}
-							color={selectedChat === chat ? 'white' : 'black'}
+							color={selectedChat === curChat ? 'white' : 'black'}
 							px={3}
 							py={2}
 							borderRadius='lg'
-							key={chat._id}
+							key={curChat._id}
 							className='chatItem'
 						>
 							<span>
-								{!chat.isGroupChat
-									? getSender(chat.users)
-									: chat.chatName}
+								{!curChat.isGroupChat
+									? getSender(curChat.users)
+									: curChat.chatName}
 							</span>
 						</Box>
 					))}

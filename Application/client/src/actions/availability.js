@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
 	GET_AVAILABILITY,
+	GET_OTHER_AVAILABILITY,
 	ADD_AVAILABILITY,
 	ADD_AVAILABILITY_ERROR,
 	REMOVE_AVAILABILITY,
@@ -22,6 +23,20 @@ export const getSelfAvailability = () => async (dispatch) => {
 	}
 };
 
+// Get someone else's availability
+export const getOtherAvailability = (userId) => async (dispatch) => {
+	try {
+		const res = await axios.get('/api/availability/' + userId);
+
+		dispatch({
+			type: GET_OTHER_AVAILABILITY,
+			payload: res.data,
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
 // Add Availability
 export const addAvailability = (formData) => async (dispatch) => {
 	// Sending data so we need to create a config object with headers and data
@@ -33,7 +48,7 @@ export const addAvailability = (formData) => async (dispatch) => {
 
 	try {
 		// Prepare response that will be returned when a request is made to api address with given body and config objects
-		const res = await axios.put('/api/availability', formData, config);
+		const res = await axios.post('/api/availability', formData, config);
 		// If everything goes okay with the response, we want to dispatch register_success
 		dispatch({
 			type: ADD_AVAILABILITY,
