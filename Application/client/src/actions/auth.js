@@ -12,6 +12,7 @@ import {
 	LOGOUT,
 	CLEAR_AVAILABILITY,
 	CLEAR_CHATS,
+	CLEAR_MEETINGS,
 } from './types';
 
 // Load User
@@ -120,5 +121,8 @@ export const logout = () => (dispatch) => {
 	});
 	dispatch({
 		type: CLEAR_CHATS,
+	});
+	dispatch({
+		type: CLEAR_MEETINGS,
 	});
 };

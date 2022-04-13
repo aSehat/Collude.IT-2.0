@@ -10,51 +10,8 @@ const router = express.Router();
 
 // @route       Post api/message
 // @desc        Sending a new message
-// @access      Public
-// router.post('/', auth, async (req, res) => {
-// 	const { content, chatId } = req.body;
-
-// 	if (!content || !chatId) {
-// 		console.log('Invalid data passed into request');
-// 		return res.sendStatus(400);
-// 	}
-
-// 	var newMessage = {
-// 		sender: req.user.id,
-// 		content: content,
-// 		chat: chatId,
-// 	};
-
-// 	try {
-// 		var message = await Message.create(newMessage);
-
-// 		message = await message.populate('sender', 'name');
-// 		message = await message.populate('chat');
-// 		message = await User.populate(message, {
-// 			path: 'chat.users',
-// 			select: 'name email',
-// 		});
-
-// 		await Chat.findByIdAndUpdate(req.body.chatId, {
-// 			latestMessage: message,
-// 		});
-
-// 		res.json(message);
-// 	} catch (error) {
-// 		res.status(400);
-// 		throw new Error(error.message);
-// 	}
-// });
-
+// @access      Private
 router.post('/', auth, async (req, res) => {
-	//  const { content, chatId } = req.body;
-
-	// const errors = validationResult(req);
-	// if (!errors.isEmpty()) {
-	// 	return res.status(400).json({ errors: errors.array() });
-	// }
-
-	//     // Destructure request body to access parameters loosely
 	const { content, chatId, meetingTitle, startDate } = req.body;
 
 	// Build profile object
@@ -80,6 +37,16 @@ router.post('/', auth, async (req, res) => {
 			select: 'name email',
 		});
 
+		if (meetingTitle) {
+			// Find the users associated with the chat and save the message to user.meetings
+			message.chat.users.forEach(async (user) => {
+				await User.findByIdAndUpdate(user.id, {
+					$push: {
+						meetings: message,
+					},
+				});
+			});
+		}
 		await Chat.findByIdAndUpdate(req.body.chatId, {
 			latestMessage: message,
 		});
@@ -90,6 +57,9 @@ router.post('/', auth, async (req, res) => {
 	}
 });
 
+// @route       Get api/message/chatId
+// @desc        Get all messages of a chat
+// @access      Private
 router.get('/:chatId', auth, async (req, res) => {
 	try {
 		const messages = await Message.find({ chat: req.params.chatId })
@@ -103,7 +73,9 @@ router.get('/:chatId', auth, async (req, res) => {
 	}
 });
 
-// Set the accepted status of a message
+// @route       Post api/message/messageId
+// @desc        Accept a meeting request
+// @access      Private
 router.post('/:messageId', auth, async (req, res) => {
 	// destructure messageId from request body
 	const { accepted } = req.body;
@@ -125,6 +97,40 @@ router.post('/:messageId', auth, async (req, res) => {
 		console.log(error.message);
 	}
 });
+
+// @route       Get api/message/
+// @desc        Get all meetings referenced in a user's meetings
+// @access      Private
+router.get('/', auth, async (req, res) => {
+	try {
+		const user = await User.findById(req.user.id).populate('meetings');
+		res.json(user.meetings);
+	} catch (error) {
+		console.log(error);
+	}
+});
+
+// router.get('/', auth, async (req, res) => {
+//     try {
+//         // Must contain the user in the users array
+//         const messages = await Message.find({
+//             accepted: true,
+//             meetingTitle: { $ne: null },
+
+//         })
+//             .populate('sender', 'name email')
+//             .populate('chat');
+
+//         res.json(messages);
+
+//         const messages = await Message.find({ meetingTitle: { $ne: null } })
+
+//         res.json(messages);
+//     } catch (error) {
+//         res.status(400);
+//         throw new Error(error.message);
+//     }
+// });
 
 //  const messageSchema = mongoose.Schema(
 // 	{
