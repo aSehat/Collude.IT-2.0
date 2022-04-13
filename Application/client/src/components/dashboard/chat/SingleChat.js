@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Box from '@mui/material/Box';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { FormControl, Input } from '@mui/material';
 import axios from 'axios';
 import ScrollableChat from './ScrollableChat';
@@ -73,7 +71,6 @@ const SingleChat = ({
 	};
 
 	const [meetingTitle, setMeetingTitle] = useState('');
-	const [time, setTime] = React.useState(new Date());
 
 	const updateTitle = ({ target }) => {
 		setMeetingTitle(target.value);
@@ -89,8 +86,10 @@ const SingleChat = ({
 					chatId: selectedChat._id,
 					content: 'Meeting Requested',
 					meetingTitle: meetingTitle,
-					startDate: time.startTime,
+					startDate: time,
 				});
+
+				console.log(time);
 
 				socket.emit('new message', data);
 				console.log('Socket Emited');
@@ -101,6 +100,7 @@ const SingleChat = ({
 		}
 	};
 
+	const [time, setTime] = React.useState(new Date());
 	const [open, setOpen] = useState(false);
 
 	const handleOpen = () => setOpen(true);

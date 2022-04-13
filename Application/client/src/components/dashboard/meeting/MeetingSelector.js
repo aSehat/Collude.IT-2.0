@@ -81,9 +81,11 @@ function MeetingSelector({
 				eventDurationInMinutes={60}
 				availableTimeslots={availableTimeslots}
 				onStartTimeSelect={(time) => {
-					setTime(time);
+					console.log(time.startTime);
+					setTime(time.startTime);
 					submitRequest();
 					setMeetingTitle('');
+					setTime(null);
 					handleClose();
 				}}
 				className='blah'
