@@ -169,6 +169,7 @@ const SingleChat = ({
 						</div>
 					</Modal>
 					<button
+						className='openButt'
 						onClick={() => {
 							handleOpen();
 						}}

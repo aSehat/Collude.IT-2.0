@@ -1,7 +1,3 @@
-Reducer Files Go Here:
-
-Please append to this when you add an item.
-
 1. Readme.txt - This
 2. Actions Folder - Contains all actions for redux life cycle
 3. Reduceres Folder - Contains all reducers for redux life cycle
