@@ -21,7 +21,7 @@ const Meetings = ({
 				<h2>Meetings</h2>
 				<h3>Your daily Meeting Summary</h3>
 			</div>
-			{meetings.length &&
+			{meetings != 0 ? (
 				meetings.map((meeting) => (
 					<SingleMeeting
 						meeting={meeting}
@@ -29,7 +29,15 @@ const Meetings = ({
 						self={user._id}
 						chatList={chats}
 					/>
-				))}
+				))
+			) : (
+				<div>
+					<br />
+					<br />
+					<br />
+					<h3>No meetings scheduled...</h3>
+				</div>
+			)}
 		</div>
 	);
 };

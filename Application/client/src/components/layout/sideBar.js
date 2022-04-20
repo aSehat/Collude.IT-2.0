@@ -74,6 +74,8 @@ const SideBar = ({
 		<Fragment>
 			{isAuthenticated && (
 				<div id='slider' className={styles.slideOut}>
+					<br />
+					<br />
 					<div className='userSearch'>
 						<Input
 							placeholder='Search a user by name or email'
@@ -114,7 +116,7 @@ const SideBar = ({
 						onClick={slideIn}
 					>
 						<div className={styles.slideButton} onClick={slideIn}>
-							<p onClick={slideIn}> Profile </p>
+							<p onClick={slideIn}> ________ </p>
 						</div>
 					</div>
 				</div>

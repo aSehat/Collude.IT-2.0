@@ -31,7 +31,7 @@ const MyChats = ({ selectedChat, chats, user }) => {
 
 	return (
 		<div>
-			<div>My Chats</div>
+			<h2 className='myChatsTitle'>My Chats</h2>
 
 			<div>
 				{chats &&

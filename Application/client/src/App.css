@@ -591,3 +591,15 @@ p {
 	  /* margin-bottom: 10px; */
   }
 
+.openButt {
+	width: 65px;
+	height: 65px;
+	border-radius: 50%;
+	position: absolute;
+	top: 120px;
+	right: 120px;
+}
+
+.myChatsTitle {
+	margin-top: 200px;
+}
