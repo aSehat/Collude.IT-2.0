@@ -4,8 +4,6 @@ import { Box, Stack } from '@mui/material';
 
 import { connect } from 'react-redux';
 
-import ChatLoading from './ChatLoading';
-
 import { useDispatch } from 'react-redux';
 import { setChat } from '../../../actions/chat';
 

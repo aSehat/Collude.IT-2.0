@@ -28,8 +28,6 @@ router.post('/', auth, async (req, res) => {
 		.populate('users', '-password')
 		.populate('latestMessage');
 
-	// console.log(isChat);
-
 	isChat = await User.populate(isChat, {
 		path: 'latestMessage.sender',
 		select: 'name email',

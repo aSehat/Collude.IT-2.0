@@ -13,7 +13,8 @@ import { Modal } from '@mui/material';
 import MeetingSelector from '../meeting/MeetingSelector';
 import { TextField } from '@mui/material';
 
-//Variable value will change on deployment
+// Variable value will change on deployment
+// Stores the Endpoint for the socket-io backend connection
 const ENDPOINT = 'http://localhost:5000';
 var socket, selectedChatCompare;
 
@@ -27,10 +28,12 @@ const SingleChat = ({
 	const [newMessage, setNewMessage] = useState('');
 	const [socketConnected, setSocketConnected] = useState(false);
 
+	// Gets the name of the sender for a given chat
 	const getSender = (loggedUser, users) => {
 		return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
 	};
 
+	// Fetches all the messages of a chat
 	const fetchMessages = async () => {
 		if (!selectedChat) {
 			return;
@@ -52,6 +55,7 @@ const SingleChat = ({
 		}
 	};
 
+	// Sends a message to be added to the selected chat
 	const sendMessage = async (event) => {
 		if (event.key === 'Enter' && newMessage !== '') {
 			try {
@@ -166,7 +170,6 @@ const SingleChat = ({
 					</Modal>
 					<button
 						onClick={() => {
-							// console.log(selectedChat);
 							handleOpen();
 						}}
 					>
