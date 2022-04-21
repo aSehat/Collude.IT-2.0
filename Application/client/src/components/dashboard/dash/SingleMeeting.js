@@ -5,7 +5,7 @@ const SingleMeeting = ({ meeting, self, chatList }) => {
 	// console.log(chatList);
 	const chat = chatList.find((chat) => chat._id === meeting.chat);
 	// concatonate chat.users into a single string
-	const users = chat.users.map((user) => user.name).join(', ');
+	const users = chat ? chat.users.map((user) => user.name).join(', ') : "";
 	const now = moment(new Date());
 	const start = moment(meeting.startDate);
 
