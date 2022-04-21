@@ -8,15 +8,15 @@ RUN apk add git
 RUN apk add curl
 
 RUN npm cache clean -f
-RUN npm install -g n
+RUN npm install -g --silent n
 RUN n 17.7.2
 
 RUN git clone https://github.com/aSehat/SoftDev-Group3
 
-RUN npm install npm@8.5.2 -g
-RUN cd /SoftDev-Group3/Application && npm install node@17.7.2 && npm install
+RUN npm install npm@8.5.2 --silent -g
+RUN cd /SoftDev-Group3/Application && npm install node@17.7.2 --silent && npm install --silent
 
-RUN cd /SoftDev-Group3/Application/client && npm install
+RUN cd /SoftDev-Group3/Application/client && npm install --silent
 
 WORKDIR "/SoftDev-Group3/Application"
 
