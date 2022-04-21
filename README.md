@@ -9,6 +9,10 @@ Docker Setup:
   4. Run `docker run -p 3000:3000 collude-app`
   5. Visit http://localhost:3000/ in the browser if it doesn't automatically launch
 
+
+*Alternatively*
+
+
 Setup and Run:
   1. Run the 'npm install' command in the /Application directory
   2. Run the 'npm install' command in the /client directory
