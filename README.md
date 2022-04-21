@@ -10,7 +10,7 @@ Setup and Run:
   5. Visit http://localhost:3000/ in the browser if it doesn't automatically launch
 
 Docker Setup:
-  1. Download [this Dockerfile]() locally (Docker can be downloaded [here](https://docs.docker.com/get-docker/))
+  1. Download [this Dockerfile](https://github.com/aSehat/SoftDev-Group3/blob/documentation-readme/Dockerfile) locally (Docker can be downloaded [here](https://docs.docker.com/get-docker/))
   2. Run `docker build -t collude-app .` in the same directory as the Dockerfile
   3. Run `docker run -p 3000:3000 collude-app`
 
