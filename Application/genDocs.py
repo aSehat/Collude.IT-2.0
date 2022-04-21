@@ -56,7 +56,11 @@ directory = os.getcwd()
 try:
     root_directory = pathlib.Path(directory)
     tree = make_tree(root_directory)
-    for item in tree:
-        print(item)
+    with open ("generated_docs.txt", "w") as f:
+        for item in tree:
+            print(item)
+            f.write(item + "\n")
+    f.close()
+        
 except Exception as e:
     raise e
