@@ -9,6 +9,11 @@ Setup and Run:
   4. Run the 'npm run dev' command in the /Application directory to start both backend and frontend servers
   5. Visit http://localhost:3000/ in the browser if it doesn't automatically launch
 
+Docker Setup:
+  1. Download [this Dockerfile]() locally (Docker can be downloaded [here](https://docs.docker.com/get-docker/))
+  2. Run `docker build -t collude-app .` in the same directory as the Dockerfile
+  3. Run `docker run -p 3000:3000 collude-app`
+
 
 Stable API routes found in /Postman directory
-'ReadMe.txt' files found in most file directories
+'Readme.txt' files found in most file directories

@@ -1,7 +1,7 @@
 import pathlib
 import os
 from os import path
-from tqdm import tqdm
+# from tqdm import tqdm
 
 PIPE_PREFIX = "│   "
 SPACE_PREFIX = "    "
@@ -29,7 +29,7 @@ def add_body(tree, root_directory, prefix=""):
     dir_iter = root_directory.iterdir()
     diretory_items = sorted(dir_iter, key=lambda item: item.is_file())
     len_diritems = len(diretory_items)
-    for index, item in tqdm(enumerate(diretory_items)):
+    for index, item in enumerate(diretory_items):
         connector = ELBOW if index == len_diritems - 1 else TEE
         if item.is_dir() and not item.name in ignoreDirectory:
             generate_directory(
