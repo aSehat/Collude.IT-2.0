@@ -3,8 +3,11 @@ Collude.IT 2.0
 
 Docker Setup:
   1. Download [this Dockerfile](https://github.com/aSehat/SoftDev-Group3/blob/documentation-readme/Dockerfile) locally (Docker can be downloaded [here](https://docs.docker.com/get-docker/))
-  2. Run `docker build -t collude-app .` in the same directory as the Dockerfile
-  3. Run `docker run -p 3000:3000 collude-app`
+  2. Check email for invite link to mongoDB > Join Atlas Organization
+    * Add IP address to whitelist via MongoDB dashboard > Security > Network Access > Add IP Address
+  3. Run `docker build -t collude-app .` in the same directory as the Dockerfile
+  4. Run `docker run -p 3000:3000 collude-app`
+  5. Visit http://localhost:3000/ in the browser if it doesn't automatically launch
 
 Setup and Run:
   1. Run the 'npm install' command in the /Application directory
